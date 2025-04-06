@@ -4,12 +4,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(HEADERS
 
 	"rgs/Application.h" 
-	"rgs/Window.h" 
-	"rgs/WindowsWindow.h")
+	"rgs/Window/Window.h" 
+	"rgs/Window/WindowsWindow.h" 
+	"rgs/Window/Base.h")
 
 set(SOURCES
 	"rgs/Main.cpp"
-	"rgs/Application.cpp")
+	"rgs/Application.cpp" 
+	"rgs/Window/WindowsWindow.cpp")
 
 set(TARGET RGS)
 add_executable(${TARGET} ${HEADERS} ${SOURCES})

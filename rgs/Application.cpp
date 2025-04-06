@@ -1,5 +1,6 @@
 #include "Application.h"
 #include <string>
+#include "Window.h"
 
 namespace RGS {
 	Application::Application(const std::string name, int width, int length) : m_name(name), m_width(width), m_length(length) {
@@ -15,10 +16,10 @@ namespace RGS {
 		}
 	}
 	void  Application::Init() {
-
+		Window::Init();
 	}
 	void  Application::Terminate() {
-
+		Window::Terminate();
 	}
 	void  Application::OnUpdate() {
 
