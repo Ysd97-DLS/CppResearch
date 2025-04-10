@@ -13,7 +13,6 @@ namespace RGS {
 	void WindowsWindow::Terminate() {};
 	void WindowsWindow::Register() {
 		ATOM atom;
-<<<<<<< HEAD
 		WNDCLASS wc = { 0 };
 		wc.cbClsExtra = 0;//类型:int,要按照窗口类结构分配的额外字节数。 系统将字节初始化为零。
 		wc.cbWndExtra = 0;//类型:int,在窗口实例之后分配的额外字节数。 系统将字节初始化为零。
@@ -38,8 +37,6 @@ namespace RGS {
 	}
 	WindowsWindow::WindowsWindow(const std::string title, const int width, const int height) :Window(title, width, height) {
 		ASSERT((s_Inited), "Not Initialized");
-=======
->>>>>>> e250d3264507fd14ff6210f12dfccfcc73a2e332
 
 	}
 }
