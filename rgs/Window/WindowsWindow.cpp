@@ -9,5 +9,10 @@
 
 namespace RGS {
 	bool WindowsWindow::s_Inited = false;
-	void WindowsWindow::Init();
+	void WindowsWindow::Init() {};
+	void WindowsWindow::Terminate() {};
+	void WindowsWindow::Register() {
+		ATOM atom;
+
+	}
 }
