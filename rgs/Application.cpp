@@ -2,7 +2,7 @@
 #include <string>
 
 namespace RGS {
-	Application::Application(const std::string name, int width, int height) : m_name(name), m_width(width), m_height(height) {
+	Application::Application(const char* name, int width, int height) : m_name(name), m_width(width), m_height(height) {
 		Init();
 	}
 	Application::~Application() {

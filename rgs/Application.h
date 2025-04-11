@@ -7,14 +7,14 @@
 namespace RGS {
 	class Application {
 	public:
-		Application(const std::string name, int width, int length);
+		Application(const char* name, int width, int length);
 		~Application();
 		void Run();
 	private:
 		void Init();
 		void Terminate();
 		void OnUpdate();
-		std::string m_name;
+		const char* m_name;
 		int m_width;
 		int m_height;
 		Window* m_Window;

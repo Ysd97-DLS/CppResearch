@@ -6,7 +6,7 @@
 namespace RGS {
 	class WindowsWindow : public Window {
 	public:
-		WindowsWindow(const std::string title, const int width, const int height);
+		WindowsWindow(const char* title, const int width, const int height);
 		~WindowsWindow();
 		void Show() override;
 		static void Init();

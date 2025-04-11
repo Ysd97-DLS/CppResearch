@@ -47,7 +47,7 @@ namespace RGS {
 		ShowWindow(m_Handle, SW_SHOW);
 		ReleaseDC(m_Handle, windowDC);
 	}
-	WindowsWindow::WindowsWindow(const std::string title, const int width, const int height) :Window(title, width, height) {
+	WindowsWindow::WindowsWindow(const char* title, const int width, const int height) :Window(title, width, height) {
 		ASSERT((s_Inited), "Not Initialized");
 		DWORD style = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
 		RECT rect;

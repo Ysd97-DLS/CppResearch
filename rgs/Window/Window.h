@@ -11,7 +11,7 @@ namespace RGS {
 		}
 		static void Init();
 		static void Terminate();
-		static Window* Create(std::string title, const int width, const int height);
+		static Window* Create(const char* title, const int width, const int height);
 	protected:
 		const char* m_Title;
 		int m_Width;
