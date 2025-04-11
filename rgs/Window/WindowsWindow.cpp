@@ -9,8 +9,16 @@
 
 namespace RGS {
 	bool WindowsWindow::s_Inited = false;
-	void WindowsWindow::Init() {};
-	void WindowsWindow::Terminate() {};
+	void WindowsWindow::Init() {
+		ASSERT(!s_Inited);
+		Register();
+		s_Inited = true;
+	};
+	void WindowsWindow::Terminate() {
+		ASSERT(s_Inited);
+		Unregister();
+		s_Inited = false;
+	};
 	void WindowsWindow::Register() {
 		ATOM atom;
 		WNDCLASS wc = { 0 };

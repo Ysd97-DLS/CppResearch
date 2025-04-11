@@ -17,6 +17,5 @@ namespace RGS {
 		int m_Width;
 		int m_Height;
 		bool m_Closed;
-		bool m_Minimized;
 	};
 }
