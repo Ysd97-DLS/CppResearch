@@ -30,13 +30,65 @@ namespace RGS {
 		UnregisterClass(RGS_WINDOW_CLASS_NAME, GetModuleHandle(NULL));
 	}
 	LRESULT CALLBACK WindowsWindow::WndProc(const HWND hWnd, const UINT msgID, const WPARAM wParam, const LPARAM lParam) {
-
+		WindowsWindow* window = (WindowsWindow*)GetProp(hWnd, RGS_WINDOW_ENTRY_NAME);
+		if (window == NULL) {
+			return DefWindowProc(hWnd, msgID, wParam, lParam);
+		}
+		switch (msgID) {
+		case WM_DESTROY:
+			window->m_Closed = true;
+			return 0;
+		}
+		return DefWindowProc(hWnd, msgID, wParam, lParam);
 	};
 	void WindowsWindow::Show() {
-		
+		HDC windowDC = GetDC(m_Handle);
+		BitBlt(windowDC, 0, 0, m_Width, m_Height, m_MemoryDC, 0, 0, SRCCOPY);
+		ShowWindow(m_Handle, SW_SHOW);
+		ReleaseDC(m_Handle, windowDC);
 	}
 	WindowsWindow::WindowsWindow(const std::string title, const int width, const int height) :Window(title, width, height) {
 		ASSERT((s_Inited), "Not Initialized");
+		DWORD style = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+		RECT rect;
+		rect.left = 0;
+		rect.top = 0;
+		rect.bottom = (long)height;
+		rect.right = (long)width;
+		AdjustWindowRect(&rect, style, false);
+		m_Handle = CreateWindow(RGS_WINDOW_CLASS_NAME, m_Title, style, CW_USEDEFAULT, 0, rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, GetModuleHandle(NULL), NULL);
+		ASSERT(m_Handle != NULL);
+		m_Closed = false;
+		SetProp(m_Handle, RGS_WINDOW_ENTRY_NAME, this);
 
+		HDC windowDC = GetDC(m_Handle);
+		m_MemoryDC = CreateCompatibleDC(windowDC);
+		BITMAPINFOHEADER biHeader = {};
+		HBITMAP newBitmap;
+		HBITMAP oldBitmap;
+		biHeader.biSize = sizeof(BITMAPINFOHEADER);
+		biHeader.biWidth = ((long)m_Width);
+		biHeader.biHeight= -((long)m_Height);//让位图从左上角开始
+		biHeader.biPlanes = 1;
+		biHeader.biBitCount = 24;
+		biHeader.biCompression = BI_RGB;
+		//分配空间
+		newBitmap = CreateDIBSection(m_MemoryDC, (BITMAPINFO*)&biHeader, DIB_RGB_COLORS, (void**)&m_Buffer, nullptr, 0);
+		ASSERT(newBitmap != NULL);
+		constexpr int channelCount = 3;
+		int size = m_Width * m_Height * channelCount * sizeof(unsigned char);
+		memset(m_Buffer, 0, size);
+		oldBitmap = (HBITMAP)SelectObject(m_MemoryDC, newBitmap);
+
+		DeleteObject(oldBitmap);
+		ReleaseDC(m_Handle, windowDC);
+
+		Show();
+	}
+	WindowsWindow::~WindowsWindow() {
+		ShowWindow(m_Handle, SW_HIDE);
+		RemoveProp(m_Handle, RGS_WINDOW_ENTRY_NAME);
+		DeleteDC(m_MemoryDC);
+		DestroyWindow(m_Handle);
 	}
 }

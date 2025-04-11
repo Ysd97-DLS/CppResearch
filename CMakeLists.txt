@@ -11,7 +11,8 @@ set(HEADERS
 set(SOURCES
 	"rgs/Main.cpp"
 	"rgs/Application.cpp" 
-	"rgs/Window/WindowsWindow.cpp")
+	"rgs/Window/WindowsWindow.cpp" 
+	"rgs/Window/Window.cpp")
 
 set(TARGET RGS)
 add_executable(${TARGET} ${HEADERS} ${SOURCES})

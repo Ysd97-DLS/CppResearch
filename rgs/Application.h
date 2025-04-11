@@ -1,5 +1,8 @@
 #pragma once 
-#include <iostream>
+#include "D:\cpp\CppResearch\rgs\Window\Window.h"
+
+#include <string>
+#include <memory>
 
 namespace RGS {
 	class Application {
@@ -13,6 +16,7 @@ namespace RGS {
 		void OnUpdate();
 		std::string m_name;
 		int m_width;
-		int m_length;
+		int m_height;
+		Window* m_Window;
 	};
 }
