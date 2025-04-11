@@ -9,6 +9,9 @@ namespace RGS {
 		bool Closed() const {
 			return m_Closed;
 		}
+		bool Minimized() const {
+			return m_Minimized;
+		}
 		static void Init();
 		static void Terminate();
 		static Window* Create(const char* title, const int width, const int height);
@@ -17,5 +20,6 @@ namespace RGS {
 		int m_Width;
 		int m_Height;
 		bool m_Closed;
+		bool m_Minimized;
 	};
 }

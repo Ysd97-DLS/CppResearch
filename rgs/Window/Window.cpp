@@ -16,4 +16,7 @@ namespace RGS {
 		ASSERT((width > 0) && (height > 0));
 		return new WindowsWindow(title, width, height);
 	}
+	Window::~Window() {
+
+	}
 }
