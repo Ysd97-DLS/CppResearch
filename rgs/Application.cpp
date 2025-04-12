@@ -31,8 +31,8 @@ namespace RGS {
 			std::cout << "A was pressed" << std::endl;
 		}
 		Framebuffer framebuffer(m_width, m_height);
-		framebuffer.Clear({ 1.0f,1.0f,1.0f });
-		framebuffer.SetColor(100, 100, { 1.0f,1.0f,1.0f });
+		framebuffer.Clear({ 1.0f,0.0f,0.0f });
+		framebuffer.SetColor(200, 200, { 1.0f,1.0f,1.0f });
 		m_Window->DrawFrambuffer(framebuffer);
 	}
 }

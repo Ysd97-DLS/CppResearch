@@ -32,7 +32,7 @@ namespace RGS {
 	}
 	Vec3 Framebuffer::GetColor(const int x, const int y)const {
 		int idx = GetPixelIdx(x, y);
-		if (idx < m_PixelSize && idx > 0) {
+		if (idx < m_PixelSize && idx >= 0) {
 			return m_ColorBuffer[idx];
 		}
 		else {
