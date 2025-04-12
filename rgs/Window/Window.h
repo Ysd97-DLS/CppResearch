@@ -1,5 +1,6 @@
 #pragma once
 #include "InputCode.h"
+#include "Framebuffer.h"
 
 namespace RGS {
 	class Window {
@@ -7,6 +8,7 @@ namespace RGS {
 		Window(const char* title, const int width, const int height);
 		virtual ~Window();
 		virtual void Show() = 0;
+		virtual void DrawFrambuffer(const Framebuffer& framebuffer) = 0;
 		bool Closed() const {
 			return m_Closed;
 		}

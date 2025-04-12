@@ -1,5 +1,5 @@
 #pragma once 
-#include "D:\cpp\CppResearch\rgs\Window\Window.h"
+#include "\cpp\CppResearch\rgs\Window\Window.h"
 
 #include <string>
 #include <memory>

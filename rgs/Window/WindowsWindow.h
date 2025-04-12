@@ -9,6 +9,7 @@ namespace RGS {
 		WindowsWindow(const char* title, const int width, const int height);
 		~WindowsWindow();
 		void Show() override;
+		virtual void DrawFrambuffer(const Framebuffer& framebuffer) override;
 		static void Init();
 		static void Terminate();
 		static void PollInputEvents();

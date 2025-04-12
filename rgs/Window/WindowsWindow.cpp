@@ -1,4 +1,4 @@
-#include "Base.h"
+#include "\cpp\CppResearch\rgs\Base\Base.h"
 #include "Window.h"
 #include "WindowsWindow.h"
 
@@ -132,5 +132,28 @@ namespace RGS {
 		RemoveProp(m_Handle, RGS_WINDOW_ENTRY_NAME);
 		DeleteDC(m_MemoryDC);
 		DestroyWindow(m_Handle);
+	}
+	void WindowsWindow::DrawFrambuffer(const Framebuffer& framebuffer) {
+		const int fWidth = framebuffer.GetWidth();
+		const int fHeight = framebuffer.GetHeight();
+		const int width = m_Width < fWidth ? m_Width : fWidth;
+		const int height = m_Height < fHeight ? m_Height : fHeight;
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				constexpr int channelCount = 3;
+				constexpr int rChannel = 2;
+				constexpr int gChannel = 1;
+				constexpr int bChannel = 0;
+				Vec3 color = framebuffer.GetColor(j, fHeight - 1 - i);
+				const int pixStart = (i * m_Width + j) * channelCount;
+				const int rIdx = pixStart + rChannel;
+				const int gIdx = pixStart + gChannel;
+				const int bIdx = pixStart + bChannel;
+				m_Buffer[rIdx] = Float_UChar(color.x);
+				m_Buffer[gIdx] = Float_UChar(color.y);
+				m_Buffer[bIdx] = Float_UChar(color.z);
+			}
+		}
+		Show();
 	}
 }

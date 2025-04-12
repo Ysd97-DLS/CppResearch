@@ -30,5 +30,9 @@ namespace RGS {
 		if (m_Window->GetKey(RGS_KEY_A) == RGS_PRESS) {
 			std::cout << "A was pressed" << std::endl;
 		}
+		Framebuffer framebuffer(m_width, m_height);
+		framebuffer.Clear({ 1.0f,1.0f,1.0f });
+		framebuffer.SetColor(100, 100, { 1.0f,1.0f,1.0f });
+		m_Window->DrawFrambuffer(framebuffer);
 	}
 }
