@@ -37,6 +37,34 @@ namespace RGS {
 	void WindowsWindow::Unregister() {
 		UnregisterClass(RGS_WINDOW_CLASS_NAME, GetModuleHandle(NULL));
 	}
+	void WindowsWindow::KeyPressImpl(WindowsWindow* Window, const WPARAM wParam, const char state) {
+		if (wParam >= '0' && wParam <= '9') {
+			Window->m_Keys[wParam] = state;
+			return;
+		}
+		if (wParam >= 'A' && wParam <= 'Z'){
+			Window->m_Keys[wParam] = state;
+			return;
+		}
+		switch (wParam) {
+		case VK_SPACE://按下空格
+			Window->m_Keys[RGS_KEY_SPACE] = state;
+			break;
+		case VK_SHIFT://按下Shift
+			Window->m_Keys[RGS_KEY_LEFT_SHIFT] = state;
+			break;
+		default:
+			break;
+		}
+		//对键盘上按下的键进行设置
+	}
+	void WindowsWindow::PollInputEvents() {
+		MSG message;
+		while (PeekMessage(&message, NULL, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&message);
+			DispatchMessage(&message);
+		}
+	}
 	LRESULT CALLBACK WindowsWindow::WndProc(const HWND hWnd, const UINT msgID, const WPARAM wParam, const LPARAM lParam) {
 		WindowsWindow* window = (WindowsWindow*)GetProp(hWnd, RGS_WINDOW_ENTRY_NAME);
 		if (window == NULL) {
@@ -45,6 +73,12 @@ namespace RGS {
 		switch (msgID) {
 		case WM_DESTROY:
 			window->m_Closed = true;
+			return 0;
+		case WM_KEYDOWN:
+			KeyPressImpl(window, wParam, RGS_PRESS);
+			return 0;
+		case WM_KEYUP:
+			KeyPressImpl(window, wParam, RGS_RELEASE);
 			return 0;
 		}
 		return DefWindowProc(hWnd, msgID, wParam, lParam);

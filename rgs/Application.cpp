@@ -1,5 +1,6 @@
 #include "Application.h"
 #include <string>
+#include <iostream>
 
 namespace RGS {
 	Application::Application(const char* name, int width, int height) : m_name(name), m_width(width), m_height(height) {
@@ -11,6 +12,7 @@ namespace RGS {
 	void Application::Run() {
 		while (!m_Window->Closed()) {
 			OnUpdate();
+			Window::PollInputEvents();
 		}
 	}
 	void  Application::Init() {
@@ -22,6 +24,11 @@ namespace RGS {
 		Window::Terminate();
 	}
 	void  Application::OnUpdate() {
-
+		if (m_Window->GetKey(RGS_KEY_0) == RGS_PRESS) {
+			std::cout << "0 was pressed" << std::endl;
+		}
+		if (m_Window->GetKey(RGS_KEY_A) == RGS_PRESS) {
+			std::cout << "A was pressed" << std::endl;
+		}
 	}
 }

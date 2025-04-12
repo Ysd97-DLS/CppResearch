@@ -5,6 +5,7 @@
 namespace RGS {
 	Window::Window(const char* title, const int width, const int height) :m_Title(title), m_Width(width), m_Height(height), m_Closed(true) {
 		ASSERT((width > 0) && (height > 0));
+		memset(m_Keys, RGS_RELEASE, RGS_KEY_MAX_COUNT);
 	}
 	void Window::Init() {
 		WindowsWindow::Init();
@@ -18,5 +19,8 @@ namespace RGS {
 	}
 	Window::~Window() {
 
+	}
+	void Window::PollInputEvents() {
+		WindowsWindow::PollInputEvents();
 	}
 }

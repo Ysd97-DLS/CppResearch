@@ -6,7 +6,8 @@ set(HEADERS
 	"rgs/Application.h" 
 	"rgs/Window/Window.h" 
 	"rgs/Window/WindowsWindow.h" 
-	"rgs/Window/Base.h")
+	"rgs/Window/Base.h"
+	"rgs/Window/InputCode.h")
 
 set(SOURCES
 	"rgs/Main.cpp"

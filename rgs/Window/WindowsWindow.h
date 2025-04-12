@@ -11,9 +11,11 @@ namespace RGS {
 		void Show() override;
 		static void Init();
 		static void Terminate();
+		static void PollInputEvents();
 	private:
 		static void Register();
 		static void Unregister();
+		static void KeyPressImpl(WindowsWindow* Window, const WPARAM wParam, const char state);
 		static LRESULT CALLBACK WndProc(const HWND hWnd, const UINT msgID, const WPARAM wParam, const LPARAM lParam);
 		/*LRESULT 是程序返回到 Windows 的整数值。 它包含程序对特定消息的响应。 
 		此值的含义取决于消息代码。 CALLBACK 是函数的调用约定。
