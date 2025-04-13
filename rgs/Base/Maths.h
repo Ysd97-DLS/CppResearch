@@ -54,7 +54,7 @@ namespace RGS {
 		constexpr Vec4() :x(0.0f), y(0.0f), z(0.0f), w(0.0f) {
 
 		}
-		constexpr Vec4(float x, float y, float z) : x(x), y(y), z(z), w(w) {
+		constexpr Vec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {
 
 		}
 		operator Vec2() const {
@@ -75,6 +75,28 @@ namespace RGS {
 			res += std::to_string(w);
 			res += ")";
 			return res;
+		}
+	};
+	struct Mat {
+		float mat[4][4];
+		constexpr Mat() : mat{ {0.0f, 0.0f, 0.0f, 0.0f},
+					  {0.0f, 0.0f, 0.0f, 0.0f},
+					  {0.0f, 0.0f, 0.0f, 0.0f},
+					  {0.0f, 0.0f, 0.0f, 0.0f} } {
+		
+		}
+		Mat(const Vec4& v0, const Vec4& v1, const Vec4& v2, const Vec4& v3);
+		operator const std::string() const {
+			std::string res;
+			res += "(";
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					res += std::to_string(mat[i][j]);
+					res += (i == 3 && j == 3) ? " )" : ", ";
+				}
+			}
 		}
 	};
 	unsigned char Float_UChar(const float f);
