@@ -1,6 +1,26 @@
 #pragma once
+#include <string>
+#include <iostream>
 
 namespace RGS {
+	struct Vec2 {
+		float x, y;
+		constexpr Vec2():x(0.0f),y(0.0f){
+		
+		}
+		constexpr Vec2(float x, float y):x(x),y(y){
+		
+		}
+		operator std::string() const {
+			std::string res;
+			res += "(";
+			res += std::to_string(x);
+			res += ", ";
+			res += std::to_string(y);
+			res += ")";
+			return res;
+		}
+	};
 	struct Vec3 {
 		float x;
 		float y;
@@ -10,6 +30,51 @@ namespace RGS {
 		}
 		constexpr Vec3(float x, float y, float z) : x(x), y(y), z(z) {
 
+		}
+		operator Vec2() const {
+			return { x,y };
+		}
+		operator std::string() const {
+			std::string res;
+			res += "(";
+			res += std::to_string(x);
+			res += ", ";
+			res += std::to_string(y);
+			res += ", ";
+			res += std::to_string(z);
+			res += ")";
+			return res;
+		}
+	};
+	struct Vec4 {
+		float x;
+		float y;
+		float z;
+		float w;
+		constexpr Vec4() :x(0.0f), y(0.0f), z(0.0f), w(0.0f) {
+
+		}
+		constexpr Vec4(float x, float y, float z) : x(x), y(y), z(z), w(w) {
+
+		}
+		operator Vec2() const {
+			return { x,y };
+		}
+		operator Vec3() const {
+			return { x,y,z };
+		}
+		operator std::string() const {
+			std::string res;
+			res += "(";
+			res += std::to_string(x);
+			res += ", ";
+			res += std::to_string(y);
+			res += ", ";
+			res += std::to_string(z);
+			res += ", ";
+			res += std::to_string(w);
+			res += ")";
+			return res;
 		}
 	};
 	unsigned char Float_UChar(const float f);
