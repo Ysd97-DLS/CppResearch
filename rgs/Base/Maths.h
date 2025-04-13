@@ -5,11 +5,11 @@
 namespace RGS {
 	struct Vec2 {
 		float x, y;
-		constexpr Vec2():x(0.0f),y(0.0f){
-		
+		constexpr Vec2() :x(0.0f), y(0.0f) {
+
 		}
-		constexpr Vec2(float x, float y):x(x),y(y){
-		
+		constexpr Vec2(float x, float y) : x(x), y(y) {
+
 		}
 		operator std::string() const {
 			std::string res;
@@ -83,7 +83,7 @@ namespace RGS {
 					  {0.0f, 0.0f, 0.0f, 0.0f},
 					  {0.0f, 0.0f, 0.0f, 0.0f},
 					  {0.0f, 0.0f, 0.0f, 0.0f} } {
-		
+
 		}
 		Mat(const Vec4& v0, const Vec4& v1, const Vec4& v2, const Vec4& v3);
 		operator const std::string() const {
@@ -99,6 +99,17 @@ namespace RGS {
 			}
 		}
 	};
+	Vec4 operator* (const Mat& m, const Vec4& v);
+	Mat operator*(const Mat& left, const Mat& right);
+	Mat& operator*= (Mat& left, Mat& right);
+	Mat Identity();
+	Mat Scale(float sx, float sy, float sz);
+	Mat Translate(float tx, float ty, float tz);
+	Mat RotateX(float angle);
+	Mat RotateY(float angle);
+	Mat RotateZ(float angle);
+	Mat LookAt(const Vec3& cx, const Vec3& cy, const Vec3& cz, const Vec3& eye);
+	float Dot(const Vec3& left, const Vec3& right);
 	unsigned char Float_UChar(const float f);
 	float UChar_Float(const unsigned char c);
 }
