@@ -10,7 +10,8 @@ set(HEADERS
 	"rgs/Window/InputCode.h"
 	"rgs/Window/Framebuffer.h"
 	"rgs/Base/Maths.h"
-	"rgs/Base/BaseShader.h")
+	"rgs/Base/BaseShader.h"
+	"rgs/Window/Render.h")
 
 set(SOURCES
 	"rgs/Main.cpp"
@@ -20,5 +21,10 @@ set(SOURCES
 	"rgs/Window/Framebuffer.cpp"
 	"rgs/Base/Maths.cpp")
 
+set(INCLUDE_PATH
+	"src"
+)
+
 set(TARGET RGS)
 add_executable(${TARGET} ${HEADERS} ${SOURCES})
+target_include_directories(${TARGET} PRIVATE ${INCLUDE_PATH})
