@@ -99,6 +99,12 @@ namespace RGS {
 			}
 		}
 	};
+	Vec3 operator-(const Vec3& left, const Vec3& right);
+	Vec3 operator*(const Vec3& left, const float right);
+	Vec3 operator*(const Vec3& left, const Vec3& right);
+	Vec3 operator/(const Vec3& left, const float right);
+	Vec3 Cross(const Vec3& left, const Vec3& right);
+	Vec3 Normalize(const Vec3& v);
 	Vec4 operator* (const Mat& m, const Vec4& v);
 	Mat operator*(const Mat& left, const Mat& right);
 	Mat& operator*= (Mat& left, Mat& right);
@@ -109,7 +115,9 @@ namespace RGS {
 	Mat RotateY(float angle);
 	Mat RotateZ(float angle);
 	Mat LookAt(const Vec3& cx, const Vec3& cy, const Vec3& cz, const Vec3& eye);
+	Mat LookAt(const Vec3& eye, const Vec3& target, const Vec3& up);
 	float Dot(const Vec3& left, const Vec3& right);
+	Mat Perspective(float fov, float aspect, float near, float far);
 	unsigned char Float_UChar(const float f);
 	float UChar_Float(const unsigned char c);
 }

@@ -9,7 +9,8 @@ set(HEADERS
 	"rgs/Base/Base.h"
 	"rgs/Window/InputCode.h"
 	"rgs/Window/Framebuffer.h"
-	"rgs/Base/Maths.h" )
+	"rgs/Base/Maths.h"
+	"rgs/Base/BaseShader.h")
 
 set(SOURCES
 	"rgs/Main.cpp"
