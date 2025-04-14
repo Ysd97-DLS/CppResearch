@@ -8,6 +8,9 @@ namespace RGS {
 		mat[0][2] = v2.x; mat[1][2] = v2.y; mat[2][2] = v2.z; mat[3][2] = v2.w;
 		mat[0][3] = v3.x; mat[1][3] = v3.y; mat[2][3] = v3.z; mat[3][3] = v3.w;
 	}
+	Vec3 operator+(const Vec3& left, const Vec3& right) {
+		return { left.x + right.x,left.y + right.y,left.z + right.z };
+	}
 	Vec3 operator-(const Vec3& left, const Vec3& right) {
 		return { left.x - right.x,left.y - right.y,left.z - right.z };
 	}
@@ -22,16 +25,17 @@ namespace RGS {
 	}
 	//实现叉乘方法
 	Vec3 Cross(const Vec3& left, const Vec3& right) {
-		float x = left.y * right.z - left.z + right.y;
+		float x = left.y * right.z - left.z * right.y;
 		float y = left.z * right.x - left.x * right.z;
-		float z = left.x * right.y - left.y - right.x;
+		float z = left.x * right.y - left.y * right.x;
 		return { x,y,z };
 	}
-	//实现标准化向量
+	//实现标准化三维向量
 	Vec3 Normalize(const Vec3& v) {
 		float len = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 		return v / len;
 	}
+	//实现矩阵左乘四维向量
 	Vec4 operator* (const Mat& m, const Vec4& v){
 		Vec4 res;
 		res.x = m.mat[0][0] * v.x + m.mat[0][1] * v.y + m.mat[0][2] * v.z + m.mat[0][3] * v.w;
@@ -149,6 +153,12 @@ namespace RGS {
 		m.mat[3][2] = -1;
 		m.mat[3][3] = 0;
 		return m;
+	}
+	float Lerp(const float start, const float end, const float ratio) {
+		return end * ratio + start * (1.0f - ratio);
+	}
+	Vec3 Lerp(const Vec3& start, const Vec3& end, const float ratio) {
+		return end * ratio + start * (1.0f - ratio);
 	}
 	unsigned char Float_UChar(const float f) {
 		return (unsigned char)(f * 255.0f);
