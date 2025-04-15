@@ -27,11 +27,12 @@ namespace RGS {
 		float z = left.x * right.y - left.y - right.x;
 		return { x,y,z };
 	}
-	//实现标准化向量
+	//实现标准化三维向量
 	Vec3 Normalize(const Vec3& v) {
 		float len = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 		return v / len;
 	}
+	//实现矩阵左乘四维向量
 	Vec4 operator* (const Mat& m, const Vec4& v){
 		Vec4 res;
 		res.x = m.mat[0][0] * v.x + m.mat[0][1] * v.y + m.mat[0][2] * v.z + m.mat[0][3] * v.w;

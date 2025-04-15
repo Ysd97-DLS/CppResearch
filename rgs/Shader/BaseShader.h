@@ -1,5 +1,5 @@
 #pragma once
-#include "Maths.h"
+#include "\cpp\CppResearch\rgs\Base\Maths.h"
 #include <string>
 
 namespace RGS {
