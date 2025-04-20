@@ -12,5 +12,5 @@ namespace RGS {
 	struct BlinnUniforms :public BaseUniforms {
 
 	};
-	void BlinnVertexShader(const BlinnVertex& vertex, const BlinnUniforms& uniforms, BlinnVaryings& varyings);
+	void BlinnVertexShader(BlinnVaryings& varyings, const BlinnVertex& vertex, const BlinnUniforms& uniforms);
 }

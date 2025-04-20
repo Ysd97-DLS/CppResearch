@@ -1,6 +1,11 @@
 #include "Application.h"
+#include "\cpp\CppResearch\rgs\Window\Framebuffer.h"
+#include "\cpp\CppResearch\rgs\Base\Maths.h"
+#include "\cpp\CppResearch\rgs\Shader\BlinnShader.h"
+#include "\cpp\CppResearch\rgs\Window\Renderer.h"
 #include <string>
 #include <iostream>
+#define PI 3.14
 
 namespace RGS {
 	Application::Application(const char* name, int width, int height) : m_name(name), m_width(width), m_height(height) {
@@ -34,5 +39,14 @@ namespace RGS {
 		framebuffer.Clear({ 1.0f,0.0f,0.0f });
 		framebuffer.SetColor(200, 200, { 1.0f,1.0f,1.0f });
 		m_Window->DrawFrambuffer(framebuffer);
+
+		Program program(BlinnVertexShader);
+		Triangle<BlinnVertex> triangle;
+		triangle[0].ModelPos = { -10.0f,10.0f,-10.0f,1.0f };
+		triangle[1].ModelPos = { -10.0f,-10.0f,-10.0f,1.0f };
+		triangle[2].ModelPos = { 30.0f,-10.0f,-10.0f,1.0f };
+		BlinnUniforms uniforms;
+		uniforms.mvp = Perspective(90.0f / 180.0f * PI, 1.0f, 1.0f, 10.0f);
+		Renderer::Draw(framebuffer, program, triangle, uniforms);
 	}
 }

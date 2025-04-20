@@ -13,9 +13,9 @@ namespace RGS {
 		Vec4 ClipPos = { 0,0,0,1 };
 	};
 	struct BaseUniforms {
-		Mat m;
+		Mat mvp;
 		operator const std::string() const {
-			return (std::string)m;
+			return (std::string)mvp;
 		}
 	};
 }

@@ -8,6 +8,9 @@ namespace RGS {
 		mat[0][2] = v2.x; mat[1][2] = v2.y; mat[2][2] = v2.z; mat[3][2] = v2.w;
 		mat[0][3] = v3.x; mat[1][3] = v3.y; mat[2][3] = v3.z; mat[3][3] = v3.w;
 	}
+	Vec3 operator+(const Vec3& left, const Vec3& right) {
+		return { left.x + right.x,left.y + right.y,left.z + right.z };
+	}
 	Vec3 operator-(const Vec3& left, const Vec3& right) {
 		return { left.x - right.x,left.y - right.y,left.z - right.z };
 	}
@@ -150,6 +153,12 @@ namespace RGS {
 		m.mat[3][2] = -1;
 		m.mat[3][3] = 0;
 		return m;
+	}
+	float Lerp(const float start, const float end, const float ratio) {
+		return end * ratio + start * (1.0f - ratio);
+	}
+	Vec3 Lerp(const Vec3& start, const Vec3& end, const float ratio) {
+		return end * ratio + start * (1.0f - ratio);
 	}
 	unsigned char Float_UChar(const float f) {
 		return (unsigned char)(f * 255.0f);
