@@ -23,7 +23,7 @@ namespace RGS {
 	}
 	void Framebuffer::SetColor(const int x, const int y, const Vec3& color) {
 		int idx = GetPixelIdx(x, y);
-		if (idx < m_PixelSize && idx > 0) {
+		if (idx < m_PixelSize && idx >= 0) {
 			m_ColorBuffer[idx] = color;
 		}
 		else {
@@ -42,7 +42,7 @@ namespace RGS {
 	}
 	void Framebuffer::SetDepth(const int x, const int y, const float depth) {
 		int idx = GetPixelIdx(x, y);
-		if (idx < m_PixelSize && idx > 0) {
+		if (idx < m_PixelSize && idx >= 0) {
 			m_DepthBuffer[idx] = depth;
 		}
 		else {
@@ -51,7 +51,7 @@ namespace RGS {
 	}
 	float Framebuffer::GetDepth(const int x, const int y)const {
 		int idx = GetPixelIdx(x, y);
-		if (idx < m_PixelSize && idx > 0) {
+		if (idx < m_PixelSize && idx >= 0) {
 			return m_DepthBuffer[idx];
 		}
 		else {

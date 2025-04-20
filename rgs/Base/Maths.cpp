@@ -25,9 +25,9 @@ namespace RGS {
 	}
 	//实现叉乘方法
 	Vec3 Cross(const Vec3& left, const Vec3& right) {
-		float x = left.y * right.z - left.z + right.y;
+		float x = left.y * right.z - left.z * right.y;
 		float y = left.z * right.x - left.x * right.z;
-		float z = left.x * right.y - left.y - right.x;
+		float z = left.x * right.y - left.y * right.x;
 		return { x,y,z };
 	}
 	//实现标准化三维向量

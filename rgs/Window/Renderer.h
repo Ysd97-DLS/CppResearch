@@ -13,7 +13,7 @@ namespace RGS {
 		vertex& operator[](size_t i) {
 			return Vertex[i];
 		}
-		const vertex& operator[](size_t i) {
+		const vertex& operator[](size_t i)const {
 			return Vertex[i];
 		}
 		Triangle() = default;
@@ -53,13 +53,13 @@ namespace RGS {
 			}
 		}
 		template<typename vertex, typename uniforms, typename varyings>
-		static void Draw(Framebuffer& framebuffer, const Program<vertex, uniforms, varyings>& program, const Triangle<vertex>& triangle, const uniforms& uniforms) {
+		static void Draw(Framebuffer& framebuffer, const Program<vertex, uniforms, varyings>& program, const Triangle<vertex>& triangle, const uniforms& uniform) {
 			static_assert(std::is_base_of_v<BaseVertex, vertex>, "vertex must inherit from RGS::BaseVertex");
 			static_assert(std::is_base_of_v<BaseVaryings, varyings>, "varyings must inherit from RGS::BaseVaryings");
 			//创建顶点数组，三角形最多截出九边形
-			varyings varying[RGS_MAX_VARYINGS] = { 0 };
+			varyings varying[RGS_MAX_VARYINGS];
 			for (int i = 0; i != 3; ++i) {
-				program.VertexShader(varying[i], triangle[i], uniforms);
+				program.VertexShader(varying[i], triangle[i], uniform);
 			}
 			int vertexNum = Clip(varying);
 		}
