@@ -41,6 +41,7 @@ namespace RGS {
 	public:
 		static bool IsVisible(const Vec4& clipPos);
 		static bool InsidePlane(const Vec4& clipPos, const Plane plane);
+		static float GetIntersectRatio(const Vec4& prev, const Vec4& curr, const Plane plane);
 		template<typename vertex, typename uniforms, typename varyings>
 		static void Draw(Framebuffer& framebuffer, const Program<vertex, uniforms, varyings>& program, const Triangle<vertex>& triangle, const uniforms& uniforms) {
 			static_assert(std::is_base_of_v<BaseVertex, vertex>, "vertex must inherit from RGS::BaseVertex");
@@ -65,6 +66,8 @@ namespace RGS {
 				const bool prevInside = InsidePlane(prevVaryings.ClipPos, plane);
 				const bool currInside = InsidePlane(currVaryings.ClipPos, plane);
 				if (prevInside != currInside) {
+					float ratio = GetIntersectRatio(prevVaryings.ClipPos, currVaryings.ClipPos, plane);
+
 					outNum++;
 				}
 				if (currInside) {
