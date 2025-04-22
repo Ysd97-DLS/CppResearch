@@ -30,17 +30,17 @@ namespace RGS {
 		case Plane::POSITIVE_W:
 			return (prev.w - 0.0f) / (prev.w - curr.w);
 		case Plane::POSITIVE_X:
-			return (prev.w - prev.x) / (prev.w - prev.x) - (curr.w - curr.x);
+			return (prev.w - prev.x) / ((prev.w - prev.x) - (curr.w - curr.x));
 		case Plane::NEGATIVE_X:
-			return (prev.w + prev.x) / (prev.w + prev.x) - (curr.w + curr.x);
+			return (prev.w + prev.x) / ((prev.w + prev.x) - (curr.w + curr.x));
 		case Plane::POSITIVE_Y:
-			return (prev.w - prev.y) / (prev.w - prev.y) - (curr.w - curr.y);
+			return (prev.w - prev.y) / ((prev.w - prev.y) - (curr.w - curr.y));
 		case Plane::NEGATIVE_Y:
-			return (prev.w + prev.y) / (prev.w + prev.y) - (curr.w + curr.y);
+			return (prev.w + prev.y) / ((prev.w + prev.y) - (curr.w + curr.y));
 		case Plane::POSITIVE_Z:
-			return (prev.w - prev.z) / (prev.w - prev.z) - (curr.w - curr.z);
+			return (prev.w - prev.z) / ((prev.w - prev.z) - (curr.w - curr.z));
 		case Plane::NEGATIVE_Z:
-			return (prev.w + prev.z) / (prev.w + prev.z) - (curr.w + curr.z);
+			return (prev.w + prev.z) / ((prev.w + prev.z) - (curr.w + curr.z));
 		default:
 			ASSERT(false);
 			return 0.0f;

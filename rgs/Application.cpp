@@ -5,7 +5,7 @@
 #include "\cpp\CppResearch\rgs\Window\Renderer.h"
 #include <string>
 #include <iostream>
-#define PI 3.14
+#define PI 3.14159265358979323846
 
 namespace RGS {
 	Application::Application(const char* name, int width, int height) : m_name(name), m_width(width), m_height(height) {

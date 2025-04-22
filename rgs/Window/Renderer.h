@@ -68,7 +68,7 @@ namespace RGS {
 		static int ClipAgainstPlane(varyings(&out)[RGS_MAX_VARYINGS], const varyings(&in)[RGS_MAX_VARYINGS], const Plane plane, const int inNum) {
 			ASSERT(inNum >= 3);
 			int outNum = 0;
-			for (int i = 0; i != inNum; ++i) {
+			for (int i = 0; i < inNum; i++) {
 				int prevIdx = (inNum - 1 + i) % inNum;
 				int currIdx = i;
 				const varyings& prevVaryings = in[prevIdx];
@@ -84,6 +84,8 @@ namespace RGS {
 					out[outNum] = in[currIdx];
 					outNum++;
 				}
+				ASSERT(outNum <= RGS_MAX_VARYINGS);
+				return outNum;
 			}
 		}
 		template<typename varyings>
@@ -96,7 +98,36 @@ namespace RGS {
 			}
 			int vertexNum = 3;
 			varyings varying_out[RGS_MAX_VARYINGS];
-			
+			vertexNum = ClipAgainstPlane(varying_out, varying, Plane::POSITIVE_W, vertexNum);
+			if (vertexNum == 0) {
+				return 0;
+			}
+			vertexNum = ClipAgainstPlane(varying, varying_out, Plane::POSITIVE_X, vertexNum);
+			if (vertexNum == 0) {
+				return 0;
+			}
+			vertexNum = ClipAgainstPlane(varying_out, varying, Plane::NEGATIVE_X, vertexNum);
+			if (vertexNum == 0) {
+				return 0;
+			}
+			vertexNum = ClipAgainstPlane(varying, varying_out, Plane::POSITIVE_Y, vertexNum);
+			if (vertexNum == 0) {
+				return 0;
+			}
+			vertexNum = ClipAgainstPlane(varying_out, varying, Plane::NEGATIVE_Y, vertexNum);
+			if (vertexNum == 0) {
+				return 0;
+			}
+			vertexNum = ClipAgainstPlane(varying, varying_out, Plane::POSITIVE_Z, vertexNum);
+			if (vertexNum == 0) {
+				return 0;
+			}
+			vertexNum = ClipAgainstPlane(varying_out, varying, Plane::NEGATIVE_Z, vertexNum);
+			if (vertexNum == 0) {
+				return 0;
+			}
+			memcpy(varying, varying_out, sizeof(varying_out));
+			return vertexNum;
 		}
 	};
 }
