@@ -72,7 +72,7 @@ namespace RGS {
 				int prevIdx = (inNum - 1 + i) % inNum;
 				int currIdx = i;
 				const varyings& prevVaryings = in[prevIdx];
-				const varyings& currVaryings = out[currIdx];
+				const varyings& currVaryings = in[currIdx];
 				const bool prevInside = InsidePlane(prevVaryings.ClipPos, plane);
 				const bool currInside = InsidePlane(currVaryings.ClipPos, plane);
 				if (prevInside != currInside) {
@@ -85,8 +85,8 @@ namespace RGS {
 					outNum++;
 				}
 				ASSERT(outNum <= RGS_MAX_VARYINGS);
-				return outNum;
 			}
+			return outNum;
 		}
 		template<typename varyings>
 		static int Clip(varyings(&varying)[RGS_MAX_VARYINGS]) {

@@ -9,15 +9,15 @@ namespace RGS {
 		case Plane::POSITIVE_W:
 			return clipPos.w >= 0.0f;
 		case Plane::POSITIVE_X:
-			return clipPos.x <= clipPos.w;
+			return clipPos.x <= +clipPos.w;
 		case Plane::NEGATIVE_X:
 			return clipPos.x >= -clipPos.w;
 		case Plane::POSITIVE_Y:
-			return clipPos.y <= clipPos.w;
+			return clipPos.y <= +clipPos.w;
 		case Plane::NEGATIVE_Y:
 			return clipPos.y >= -clipPos.w;
 		case Plane::POSITIVE_Z:
-			return clipPos.z <= clipPos.w;
+			return clipPos.z <= +clipPos.w;
 		case Plane::NEGATIVE_Z:
 			return clipPos.z >= -clipPos.w;
 		default:
