@@ -106,6 +106,10 @@ namespace RGS {
 	Vec3 operator/(const Vec3& left, const float right);
 	Vec3 Cross(const Vec3& left, const Vec3& right);
 	Vec3 Normalize(const Vec3& v);
+	Vec4 operator+(const Vec4& left, const Vec4& right);
+	Vec4 operator-(const Vec4& left, const Vec4& right);
+	Vec4 operator* (const Vec4& left, const float right);
+	Vec4 operator*(const Vec4& left, const Vec4& right);
 	Vec4 operator* (const Mat& m, const Vec4& v);
 	Mat operator*(const Mat& left, const Mat& right);
 	Mat& operator*= (Mat& left, Mat& right);

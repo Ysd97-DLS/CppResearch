@@ -20,15 +20,15 @@ namespace RGS {
 			Window::PollInputEvents();
 		}
 	}
-	void  Application::Init() {
+	void Application::Init() {
 		Window::Init();
 		m_Window = Window::Create(m_name, m_width, m_height);
 	}
-	void  Application::Terminate() {
+	void Application::Terminate() {
 		delete m_Window;
 		Window::Terminate();
 	}
-	void  Application::OnUpdate() {
+	void Application::OnUpdate() {
 		if (m_Window->GetKey(RGS_KEY_0) == RGS_PRESS) {
 			std::cout << "0 was pressed" << std::endl;
 		}
@@ -36,9 +36,7 @@ namespace RGS {
 			std::cout << "A was pressed" << std::endl;
 		}
 		Framebuffer framebuffer(m_width, m_height);
-		framebuffer.Clear({ 1.0f,0.0f,0.0f });
-		framebuffer.SetColor(200, 200, { 1.0f,1.0f,1.0f });
-		m_Window->DrawFrambuffer(framebuffer);
+		framebuffer.Clear();
 
 		Program program(BlinnVertexShader);
 		Triangle<BlinnVertex> triangle;
@@ -48,5 +46,6 @@ namespace RGS {
 		BlinnUniforms uniforms;
 		uniforms.mvp = Perspective(90.0f / 180.0f * PI, 1.0f, 1.0f, 10.0f);
 		Renderer::Draw(framebuffer, program, triangle, uniforms);
+		m_Window->DrawFrambuffer(framebuffer);
 	}
 }

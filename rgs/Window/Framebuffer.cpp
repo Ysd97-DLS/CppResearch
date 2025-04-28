@@ -22,6 +22,10 @@ namespace RGS {
 		}
 	}
 	void Framebuffer::SetColor(const int x, const int y, const Vec3& color) {
+		if ((x < 0) || (x >= m_Width) || (y < 0) || (y >= m_Height)) {
+			ASSERT(false);
+			return;
+		}
 		int idx = GetPixelIdx(x, y);
 		if (idx < m_PixelSize && idx >= 0) {
 			m_ColorBuffer[idx] = color;

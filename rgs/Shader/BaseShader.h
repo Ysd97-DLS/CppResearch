@@ -10,7 +10,9 @@ namespace RGS {
 		}
 	};
 	struct BaseVaryings {
-		Vec4 ClipPos = { 0,0,0,1 };
+		Vec4 ClipPos = { 0.0f,0.0f,0.0f,1.0f };
+		Vec4 NdcPos = { 0.0f,0.0f,0.0f,1.0f };
+		Vec4 FragPos = { 0.0f,0.0f,0.0f,1.0f };
 	};
 	struct BaseUniforms {
 		Mat mvp;

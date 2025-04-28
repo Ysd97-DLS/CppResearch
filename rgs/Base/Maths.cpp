@@ -8,19 +8,22 @@ namespace RGS {
 		mat[0][2] = v2.x; mat[1][2] = v2.y; mat[2][2] = v2.z; mat[3][2] = v2.w;
 		mat[0][3] = v3.x; mat[1][3] = v3.y; mat[2][3] = v3.z; mat[3][3] = v3.w;
 	}
-	Vec3 operator+(const Vec3& left, const Vec3& right) {
-		return { left.x + right.x,left.y + right.y,left.z + right.z };
+	Vec3 operator+ (const Vec3& left, const Vec3& right) {
+		return Vec3{ left.x + right.x,left.y + right.y,left.z + right.z };
 	}
-	Vec3 operator-(const Vec3& left, const Vec3& right) {
-		return { left.x - right.x,left.y - right.y,left.z - right.z };
+	Vec3 operator- (const Vec3& left, const Vec3& right) {
+		return Vec3{ left.x - right.x,left.y - right.y,left.z - right.z };
 	}
-	Vec3 operator*(const Vec3& left, const float right) {
+	Vec3 operator* (const float right, const Vec3& left) {
+		return Vec3{ left.x * right, left.y * right, left.z * right };
+	}
+	Vec3 operator* (const Vec3& left, const float right) {
 		return left * right;
 	}
-	Vec3 operator*(const Vec3& left, const Vec3& right) {
-		return { left.x * right.x, left.y * right.y,left.z * right.z };
+	Vec3 operator* (const Vec3& left, const Vec3& right) {
+		return Vec3{ left.x * right.x, left.y * right.y,left.z * right.z };
 	}
-	Vec3 operator/(const Vec3& left, const float right) {
+	Vec3 operator/ (const Vec3& left, const float right) {
 		return left * (1.0f / right);
 	}
 	//实现叉乘方法
@@ -34,6 +37,25 @@ namespace RGS {
 	Vec3 Normalize(const Vec3& v) {
 		float len = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 		return v / len;
+	}
+	Vec4 operator+ (const Vec4& left, const Vec4& right) {
+		return Vec4{ left.x + right.x,left.y + right.y,left.z + right.z,left.w - right.w };
+	}
+	Vec4 operator- (const Vec4& left, const Vec4& right) {
+		return Vec4{ left.x - right.x,left.y - right.y,left.z - right.z,left.w - right.w };
+	}
+	Vec4 operator* (const Vec4& left, const float right) {
+		return Vec4{ left.x * right,left.y * right,left.z * right,left.w * right };
+	}
+	Vec4 operator* (const float right, const Vec4& left) {
+		return left * right;
+	}
+	Vec4 operator* (const Vec4& left, const Vec4& right) {
+		return Vec4{ left.x * right.x, left.y * right.y,left.z * right.z,left.w * right.w };
+	}
+	Vec4 operator/ (const Vec4& left, const float right) {
+		ASSERT(right != 0);
+		return left * (1.0f / right);
 	}
 	//实现矩阵左乘四维向量
 	Vec4 operator* (const Mat& m, const Vec4& v){

@@ -29,7 +29,7 @@ namespace RGS {
 	class Renderer {
 	private:
 		static constexpr int RGS_MAX_VARYINGS = 9;
-		enum class Plane{
+		enum class Plane {
 			POSITIVE_W,
 			POSITIVE_X,
 			NEGATIVE_X,
@@ -62,6 +62,18 @@ namespace RGS {
 				program.VertexShader(varying[i], triangle[i], uniform);
 			}
 			int vertexNum = Clip(varying);
+
+			CalculateNdcPos(varying, vertexNum);
+			int fWidth = framebuffer.GetWidth();
+			int fHeight = framebuffer.GetHeight();
+			CalculateFragPos(varying, vertexNum, (float)fWidth, (float)fHeight);
+			for (int i = 0; i < vertexNum - 2; i++) {
+				varyings triVaryings[3];
+				triVaryings[0] = varying[0];
+				triVaryings[1] = varying[i + 1];
+				triVaryings[2] = varying[i + 2];
+				RasterizeTriangle(framebuffer, program, triVaryings, uniform);
+			}
 		}
 		//返回顶点数目
 		template<typename varyings>
@@ -92,7 +104,7 @@ namespace RGS {
 		static int Clip(varyings(&varying)[RGS_MAX_VARYINGS]) {
 			bool v0_visible = IsVisible(varying[0].ClipPos);
 			bool v1_visible = IsVisible(varying[1].ClipPos);
-			bool v2_visible = IsVisible(varying[2].ClipPos); 
+			bool v2_visible = IsVisible(varying[2].ClipPos);
 			if (v0_visible && v1_visible && v2_visible) {
 				return 3;
 			}
@@ -128,6 +140,39 @@ namespace RGS {
 			}
 			memcpy(varying, varying_out, sizeof(varying_out));
 			return vertexNum;
+		}
+		template<typename varyings>
+		static void CalculateNdcPos(varyings(&varying)[RGS_MAX_VARYINGS], const int vertexNum) {
+			for (int i = 0;i < vertexNum;i++) {
+				float w = varying[i].ClipPos.w;
+				varying[i].NdcPos = varying[i].ClipPos / w;
+				varying[i].NdcPos.w = 1.0f / w;
+			}
+		}
+		template<typename varyings>
+		static void CalculateFragPos(varyings(&varying)[RGS_MAX_VARYINGS], const int vertexNum, const float width, const float height) {
+			for (int i = 0;i < vertexNum;i++) {
+				float x = ((varying[i].NdcPos.x + 1.0f) * 0.5f * width);
+				float y = ((varying[i].NdcPos.y + 1.0f) * 0.5f * height);
+				float z = (varying[i].NdcPos.z + 1.0f) * 0.5f;
+				float w = varying[i].NdcPos.w;
+				varying[i].FragPos.x = x;
+				varying[i].FragPos.y = y;
+				varying[i].FragPos.z = z;
+				varying[i].FragPos.w = w;
+			}
+		}
+		template<typename vertex,typename uniforms, typename varyings>
+		static void RasterizeTriangle(Framebuffer& framebuffer, const Program<vertex,uniforms,varyings>& program, const varyings(&varying)[3],const uniforms& uniform){
+			for (int i = 0; i < 3; i++) {
+				int x = varying[i].FragPos.x;
+				int y = varying[i].FragPos.y;
+				for (int j = -5; j < 6; j++) {
+					for (int k = -5; k < 6; k++) {
+						framebuffer.SetColor(x + j, y + k, { 1.0f,1.0f,1.0f });
+					}
+				}
+			}
 		}
 	};
 }
