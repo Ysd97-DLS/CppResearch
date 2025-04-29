@@ -38,10 +38,16 @@ namespace RGS {
 			POSITIVE_Z,
 			NEGATIVE_Z,
 		};
+		struct BoundingBox {
+			int m_minX, m_maxX, m_minY, m_maxY;
+		};
 	public:
 		static bool IsVisible(const Vec4& clipPos);
 		static bool InsidePlane(const Vec4& clipPos, const Plane plane);
 		static float GetIntersectRatio(const Vec4& prev, const Vec4& curr, const Plane plane);
+		static BoundingBox GetBoundingBox(const Vec4(&fragCoords)[3], const int width, const int height);
+		static void CalculateWeights(float(&screenweights)[3], float(&weights)[3], const Vec4(&fragCoords)[3], const Vec2& screenPoint);
+		static bool InsideTriangle(float(&weights)[3]);
 		template<typename varyings>
 		static void LerpVaryings(varyings& out, const varyings& start, const varyings& end, const float ratio) {
 			constexpr int floatNum = sizeof(varyings) / sizeof(float);
@@ -164,15 +170,23 @@ namespace RGS {
 		}
 		template<typename vertex,typename uniforms, typename varyings>
 		static void RasterizeTriangle(Framebuffer& framebuffer, const Program<vertex,uniforms,varyings>& program, const varyings(&varying)[3],const uniforms& uniform){
-			for (int i = 0; i < 3; i++) {
-				int x = varying[i].FragPos.x;
-				int y = varying[i].FragPos.y;
-				float r = (varying[i].NdcPos.x + 1.0f) / 2.0f;
-				float g = (varying[i].NdcPos.y + 1.0f) / 2.0f;
-				for (int j = -5; j < 6; j++) {
-					for (int k = -5; k < 6; k++) {
-						framebuffer.SetColor(x + j, y + k, { r,g,1.0f });
-					}
+			Vec4 fragCoords[3];
+			fragCoords[0] = varying[0].FragPos;
+			fragCoords[1] = varying[1].FragPos;
+			fragCoords[2] = varying[2].FragPos;
+			BoundingBox bBox = GetBoundingBox(fragCoords, framebuffer.GetWidth(), framebuffer.GetHeight());
+
+			for (int y = bBox.m_minY; y <= bBox.m_maxY; y++) {
+				for (int x = bBox.m_minX; x <= bBox.m_maxX; x++) {
+					float screenWeights[3];
+					float weights[3];
+					Vec2 screenPoint{ (float)x + 0.5f,(float)y + 0.5f };
+					CalculateWeights(screenWeights, weights, fragCoords, screenPoint);
+					if (!InsideTriangle(weights))
+						continue;
+					varyings pixVaryings;
+					LerpVaryings(pixVaryings, varying, weights);
+					ProcessPixel(framebuffer, x, y, program, pixVaryings, uniforms);
 				}
 			}
 		}

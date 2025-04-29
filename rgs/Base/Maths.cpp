@@ -8,6 +8,12 @@ namespace RGS {
 		mat[0][2] = v2.x; mat[1][2] = v2.y; mat[2][2] = v2.z; mat[3][2] = v2.w;
 		mat[0][3] = v3.x; mat[1][3] = v3.y; mat[2][3] = v3.z; mat[3][3] = v3.w;
 	}
+	Vec2 operator+(const Vec2& left, const Vec2& right) {
+		return Vec2{ left.x + right.x,left.y + right.y };
+	}
+	Vec2 operator-(const Vec2& left, const Vec2& right) {
+		return Vec2{ left.x - right.x,left.y - right.y };
+	}
 	Vec3 operator+ (const Vec3& left, const Vec3& right) {
 		return Vec3{ left.x + right.x,left.y + right.y,left.z + right.z };
 	}
@@ -187,5 +193,16 @@ namespace RGS {
 	}
 	float UChar_Float(const unsigned char c) {
 		return (float)c / 255.0f;
+	}
+	float Clamp(const float val, const float min, const float max) {
+		if (val < min) {
+			return min;
+		}
+		else if (val > max) {
+			return max;
+		}
+		else {
+			return val;
+		}
 	}
 }
