@@ -167,9 +167,11 @@ namespace RGS {
 			for (int i = 0; i < 3; i++) {
 				int x = varying[i].FragPos.x;
 				int y = varying[i].FragPos.y;
+				float r = (varying[i].NdcPos.x + 1.0f) / 2.0f;
+				float g = (varying[i].NdcPos.y + 1.0f) / 2.0f;
 				for (int j = -5; j < 6; j++) {
 					for (int k = -5; k < 6; k++) {
-						framebuffer.SetColor(x + j, y + k, { 1.0f,1.0f,1.0f });
+						framebuffer.SetColor(x + j, y + k, { r,g,1.0f });
 					}
 				}
 			}

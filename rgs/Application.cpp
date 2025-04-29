@@ -40,7 +40,7 @@ namespace RGS {
 
 		Program program(BlinnVertexShader);
 		Triangle<BlinnVertex> triangle;
-		triangle[0].ModelPos = { -10.0f,10.0f,-10.0f,1.0f };
+		triangle[0].ModelPos = { 0.0f,0.0f,-10.0f,1.0f };
 		triangle[1].ModelPos = { -10.0f,-10.0f,-10.0f,1.0f };
 		triangle[2].ModelPos = { 30.0f,-10.0f,-10.0f,1.0f };
 		BlinnUniforms uniforms;
