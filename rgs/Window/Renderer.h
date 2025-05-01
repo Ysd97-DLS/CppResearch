@@ -22,9 +22,9 @@ namespace RGS {
 	struct Program {
 		using vertex_shader = void (*)(varyings&, const vertex&, const uniforms&);
 		vertex_shader VertexShader;
-		Program(const vertex_shader vertexShader) :VertexShader(vertexShader) {
-
-		}
+		using fragment_shader = Vec4(*)(bool& discard, const varyings&, const uniforms&);
+		fragment_shader FragmentShader;
+		Program(const vertex_shader vertexShader,const fragment_shader fragmentShader) :VertexShader(vertexShader),FragmentShader(fragmentShader){}
 	};
 	class Renderer {
 	private:
@@ -56,6 +56,17 @@ namespace RGS {
 			float* floatOut = (float*)&out;
 			for (int i = 0; i < (int)floatNum; i++) {
 				floatOut[i] = Lerp(floatStart[i], floatEnd[i], ratio);
+			}
+		}
+		template<typename varyings>
+		static void LerpVaryings(varyings& out, const varyings(&varying)[3], float(&weights)[3]) {
+			constexpr int floatNum = sizeof(varyings) / sizeof(float);
+			float* v0 = (float*)&varying[0];
+			float* v1 = (float*)&varying[1];
+			float* v2 = (float*)&varying[2];
+			float* outFloat = (float*)&out;
+			for (int i = 0; i < (int)floatNum;i++) {
+				outFloat[i] = v0[i] * weights[0] + v1[i] * weights[1] + v2[i] * weights[2];
 			}
 		}
 		template<typename vertex, typename uniforms, typename varyings>
@@ -168,6 +179,18 @@ namespace RGS {
 				varying[i].FragPos.w = w;
 			}
 		}
+		template<typename vertex,typename uniforms,typename varyings>
+		static void ProcessPixel(Framebuffer& framebuffer, const int x, const int y, const Program<vertex, uniforms, varyings>& program, const varyings& varying, const uniforms& uniform) {
+			bool discard = false;
+			Vec4 color{ 0.0f,0.0f,0.0f,0.0f };
+			color = program.FragmentShader(discard, varying, uniform);
+			if (discard) { return; }
+			color.x = Clamp(color.x, 0.0f, 1.0f);
+			color.y = Clamp(color.y, 0.0f, 1.0f);
+			color.z = Clamp(color.z, 0.0f, 1.0f);
+			color.w = Clamp(color.w, 0.0f, 1.0f);
+			framebuffer.SetColor(x, y, color);
+		}
 		template<typename vertex,typename uniforms, typename varyings>
 		static void RasterizeTriangle(Framebuffer& framebuffer, const Program<vertex,uniforms,varyings>& program, const varyings(&varying)[3],const uniforms& uniform){
 			Vec4 fragCoords[3];
@@ -186,7 +209,7 @@ namespace RGS {
 						continue;
 					varyings pixVaryings;
 					LerpVaryings(pixVaryings, varying, weights);
-					ProcessPixel(framebuffer, x, y, program, pixVaryings, uniforms);
+					ProcessPixel(framebuffer, x, y, program, pixVaryings, uniform);
 				}
 			}
 		}
