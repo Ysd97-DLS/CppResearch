@@ -59,14 +59,22 @@ namespace RGS {
 			}
 		}
 		template<typename varyings>
-		static void LerpVaryings(varyings& out, const varyings(&varying)[3], float(&weights)[3]) {
+		static void LerpVaryings(varyings& out, const varyings(&varying)[3], float(&weights)[3], const int width, const int height) {
+			out.ClipPos = varying[0].ClipPos * weights[0] + varying[1].ClipPos * weights[1] + varying[2].ClipPos * weights[2];
+			out.NdcPos = out.ClipPos / out.ClipPos.w;
+			out.NdcPos.w = 1.0f / out.ClipPos.w;
+			out.FragPos.x = (out.NdcPos.x + 1.0f) * 0.5f * width;
+			out.FragPos.y = (out.NdcPos.y+ 1.0f) * 0.5f * height;
+			out.FragPos.z = (out.NdcPos.z + 1.0f) * 0.5f;
+			out.FragPos.w = out.NdcPos.w;
+			constexpr int floatOffset = sizeof(Vec4) * 3 / sizeof(float);
 			constexpr int floatNum = sizeof(varyings) / sizeof(float);
 			float* v0 = (float*)&varying[0];
 			float* v1 = (float*)&varying[1];
 			float* v2 = (float*)&varying[2];
-			float* outFloat = (float*)&out;
-			for (int i = 0; i < (int)floatNum;i++) {
-				outFloat[i] = v0[i] * weights[0] + v1[i] * weights[1] + v2[i] * weights[2];
+			float* floatOut = (float*)&out;
+			for (int i = floatOffset; i < (int)floatNum;i++) {
+				floatOut[i] = v0[i] * weights[0] + v1[i] * weights[1] + v2[i] * weights[2];
 			}
 		}
 		template<typename vertex, typename uniforms, typename varyings>
@@ -122,7 +130,7 @@ namespace RGS {
 			bool v0_visible = IsVisible(varying[0].ClipPos);
 			bool v1_visible = IsVisible(varying[1].ClipPos);
 			bool v2_visible = IsVisible(varying[2].ClipPos);
-			if (v0_visible && v1_visible && v2_visible) {
+			if (v0_visible && v1_visible && v2_visible) { 
 				return 3;
 			}
 			int vertexNum = 3;
@@ -198,6 +206,8 @@ namespace RGS {
 			fragCoords[1] = varying[1].FragPos;
 			fragCoords[2] = varying[2].FragPos;
 			BoundingBox bBox = GetBoundingBox(fragCoords, framebuffer.GetWidth(), framebuffer.GetHeight());
+			int width = framebuffer.GetWidth();
+			int height = framebuffer.GetHeight();
 
 			for (int y = bBox.m_minY; y <= bBox.m_maxY; y++) {
 				for (int x = bBox.m_minX; x <= bBox.m_maxX; x++) {
@@ -208,7 +218,7 @@ namespace RGS {
 					if (!InsideTriangle(weights))
 						continue;
 					varyings pixVaryings;
-					LerpVaryings(pixVaryings, varying, weights);
+					LerpVaryings(pixVaryings, varying, weights, width, height);
 					ProcessPixel(framebuffer, x, y, program, pixVaryings, uniform);
 				}
 			}
