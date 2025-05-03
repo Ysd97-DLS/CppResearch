@@ -24,7 +24,7 @@ namespace RGS {
 		return Vec3{ left.x * right, left.y * right, left.z * right };
 	}
 	Vec3 operator* (const Vec3& left, const float right) {
-		return left * right;
+		return right * left;
 	}
 	Vec3 operator* (const Vec3& left, const Vec3& right) {
 		return Vec3{ left.x * right.x, left.y * right.y,left.z * right.z };
@@ -53,8 +53,8 @@ namespace RGS {
 	Vec4 operator* (const Vec4& left, const float right) {
 		return Vec4{ left.x * right,left.y * right,left.z * right,left.w * right };
 	}
-	Vec4 operator* (const float right, const Vec4& left) {
-		return left * right;
+	Vec4 operator* (const float left, const Vec4& right) {
+		return right * left;
 	}
 	Vec4 operator* (const Vec4& left, const Vec4& right) {
 		return Vec4{ left.x * right.x, left.y * right.y,left.z * right.z,left.w * right.w };
@@ -115,7 +115,7 @@ namespace RGS {
 		m.mat[2][2] = c;
 		return m;
 	}
-	Mat RotateY(float angle) {
+	Mat RotateZ(float angle) {
 		Mat m = Identity();
 		float c = (float)cos(angle);
 		float s = (float)sin(angle);
@@ -125,7 +125,7 @@ namespace RGS {
 		m.mat[1][1] = c;
 		return m;
 	}
-	Mat RotateZ(float angle) {
+	Mat RotateY(float angle) {
 		Mat m = Identity();
 		float c = (float)cos(angle);
 		float s = (float)sin(angle);
