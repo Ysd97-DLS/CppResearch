@@ -55,8 +55,8 @@ namespace RGS {
 		float maxY = std::max<float>(listY);
 		minX = Clamp(minX, 0.0f, (float)(width - 1));
 		maxX = Clamp(maxX, 0.0f, (float)(width - 1));
-		minY = Clamp(minY, 0.0f, (float)(width - 1));
-		maxY = Clamp(maxY, 0.0f, (float)(width - 1));
+		minY = Clamp(minY, 0.0f, (float)(height - 1));
+		maxY = Clamp(maxY, 0.0f, (float)(height - 1));
 		BoundingBox bBox;
 		bBox.m_minX = std::floor(minX);
 		bBox.m_minY = std::floor(minY);

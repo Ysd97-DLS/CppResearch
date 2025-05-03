@@ -30,22 +30,22 @@ namespace RGS {
 		return Vec3{ left.x * right.x, left.y * right.y,left.z * right.z };
 	}
 	Vec3 operator/ (const Vec3& left, const float right) {
+		ASSERT(right != 0);
 		return left * (1.0f / right);
 	}
-	//实现叉乘方法
 	Vec3 Cross(const Vec3& left, const Vec3& right) {
 		float x = left.y * right.z - left.z * right.y;
 		float y = left.z * right.x - left.x * right.z;
 		float z = left.x * right.y - left.y * right.x;
 		return { x,y,z };
 	}
-	//实现标准化三维向量
 	Vec3 Normalize(const Vec3& v) {
 		float len = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+		ASSERT(len != 0);
 		return v / len;
 	}
 	Vec4 operator+ (const Vec4& left, const Vec4& right) {
-		return Vec4{ left.x + right.x,left.y + right.y,left.z + right.z,left.w - right.w };
+		return Vec4{ left.x + right.x,left.y + right.y,left.z + right.z,left.w + right.w };
 	}
 	Vec4 operator- (const Vec4& left, const Vec4& right) {
 		return Vec4{ left.x - right.x,left.y - right.y,left.z - right.z,left.w - right.w };
@@ -63,7 +63,6 @@ namespace RGS {
 		ASSERT(right != 0);
 		return left * (1.0f / right);
 	}
-	//实现矩阵左乘四维向量
 	Vec4 operator* (const Mat& m, const Vec4& v){
 		Vec4 res;
 		res.x = m.mat[0][0] * v.x + m.mat[0][1] * v.y + m.mat[0][2] * v.z + m.mat[0][3] * v.w;
@@ -77,7 +76,7 @@ namespace RGS {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				for (int k = 0; k < 4; k++) {
-					res.mat[i][j] += left.mat[i][k] + right.mat[k][j];
+					res.mat[i][j] += left.mat[i][k] * right.mat[k][j];
 				}
 			}
 		}
@@ -87,11 +86,9 @@ namespace RGS {
 		left = left * right;
 		return left;
 	}
-	//初始化单位矩阵
 	Mat Identity() {
 		return Mat({ 1,0,0,0 }, { 0,1,0,0 }, { 0,0,1,0 }, { 0,0,0,1 });
 	}
-	//实现拉伸方法
 	Mat Scale(float sx, float sy, float sz) {
 		Mat m = Identity();
 		ASSERT(sx != 0 && sy != 0 && sz != 0);
@@ -100,7 +97,6 @@ namespace RGS {
 		m.mat[2][2] = sz;
 		return m;
 	}
-	//实现平移方法
 	Mat Translate(float tx, float ty, float tz) {
 		Mat m = Identity();
 		ASSERT(tx != 0 && ty != 0 && tz != 0);
@@ -109,7 +105,6 @@ namespace RGS {
 		m.mat[2][3] = tz;
 		return m;
 	}
-	//关于X轴旋转
 	Mat RotateX(float angle) {
 		Mat m = Identity();
 		float c = (float)cos(angle);
@@ -120,7 +115,6 @@ namespace RGS {
 		m.mat[2][2] = c;
 		return m;
 	}
-	//关于Y轴旋转
 	Mat RotateY(float angle) {
 		Mat m = Identity();
 		float c = (float)cos(angle);
@@ -131,7 +125,6 @@ namespace RGS {
 		m.mat[1][1] = c;
 		return m;
 	}
-	//关于Z轴旋转
 	Mat RotateZ(float angle) {
 		Mat m = Identity();
 		float c = (float)cos(angle);
@@ -142,7 +135,6 @@ namespace RGS {
 		m.mat[0][0] = c;
 		return m;
 	}
-	//从世界空间到观察空间
 	Mat LookAt(const Vec3& cx, const Vec3& cy, const Vec3& cz, const Vec3& eye) {
 		Mat m = Identity();
 		m.mat[0][0] = cx.x;
@@ -159,7 +151,6 @@ namespace RGS {
 		m.mat[2][3] = -Dot(cz, eye);
 		return m;
 	}
-	//LookAt函数的优化
 	Mat LookAt(const Vec3& eye, const Vec3& target, const Vec3& up) {
 		Vec3 cz = Normalize(eye - target);
 		Vec3 cx = Normalize(Cross(up, cz));
@@ -169,7 +160,6 @@ namespace RGS {
 	float Dot(const Vec3& left, const Vec3& right) {
 		return left.x * right.x + left.y * right.y + left.z * right.z;
 	}
-	//从观察空间到裁剪空间
 	Mat Perspective(float fov, float aspect, float near, float far) {
 		Mat m = Identity();
 		ASSERT(fov > 0 && aspect > 0);

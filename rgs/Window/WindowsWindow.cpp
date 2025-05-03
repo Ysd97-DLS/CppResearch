@@ -133,7 +133,7 @@ namespace RGS {
 		DeleteDC(m_MemoryDC);
 		DestroyWindow(m_Handle);
 	}
-	void WindowsWindow::DrawFrambuffer(const Framebuffer& framebuffer) {
+	void WindowsWindow::DrawFramebuffer(const Framebuffer& framebuffer) {
 		const int fWidth = framebuffer.GetWidth();
 		const int fHeight = framebuffer.GetHeight();
 		const int width = m_Width < fWidth ? m_Width : fWidth;

@@ -70,6 +70,6 @@ namespace RGS {
 		Mat proj = Perspective(90.0f / 360.0f * 2.0f * PI, m_Camera.Aspect, 0.1f, 100.0f);
 		uniforms.mvp = proj * view;
 		Renderer::Draw(framebuffer, program, triangle, uniforms);
-		m_Window->DrawFrambuffer(framebuffer);
+		m_Window->DrawFramebuffer(framebuffer);
 	}
 }
