@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <chrono>
 
 namespace RGS {
 	struct Camera {
@@ -22,10 +23,11 @@ namespace RGS {
 		void Init();
 		void Terminate();
 		void OnCameraUpdate(float time);
-		void OnUpdate();
+		void OnUpdate(float time);
 		const char* m_name;
 		int m_width;
 		int m_height;
+		std::chrono::steady_clock::time_point m_LastFrameTime;
 		Window* m_Window;
 		Camera m_Camera;
 	};

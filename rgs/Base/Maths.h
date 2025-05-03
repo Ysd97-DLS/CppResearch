@@ -27,7 +27,7 @@ namespace RGS {
 		float x;
 		float y;
 		float z;
-		constexpr Vec3() :x(0.0f), y(0.0f), z(0.0f) {
+		constexpr Vec3() : x(0.0f), y(0.0f), z(0.0f) {
 
 		}
 		constexpr Vec3(float x, float y, float z) : x(x), y(y), z(z) {
@@ -53,7 +53,7 @@ namespace RGS {
 		float y;
 		float z;
 		float w;
-		constexpr Vec4() :x(0.0f), y(0.0f), z(0.0f), w(0.0f) {
+		constexpr Vec4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {
 
 		}
 		constexpr Vec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {
@@ -113,6 +113,7 @@ namespace RGS {
 	Vec4 operator+(const Vec4& left, const Vec4& right);
 	Vec4 operator-(const Vec4& left, const Vec4& right);
 	Vec4 operator*(const Vec4& left, const float right);
+	Vec4 operator*(const float left, const Vec4& right);
 	Vec4 operator*(const Vec4& left, const Vec4& right);
 	Vec4 operator/(const Vec4& left, const float right);
 	Vec4 operator*(const Mat& m, const Vec4& v);
