@@ -70,6 +70,10 @@ namespace RGS {
 		Mat proj = Perspective(90.0f / 360.0f * 2.0f * PI, m_Camera.Aspect, 0.1f, 100.0f);
 		uniforms.mvp = proj * view;
 		Renderer::Draw(framebuffer, program, triangle, uniforms);
+		triangle[0].ModelPos = { 10.0f,10.0f,-10.0f,1.0f };
+		triangle[1].ModelPos = { -1.0f,-1.0f,-1.0f,1.0f };
+		triangle[2].ModelPos = { 10.0f,-10.0f,-10.0f,1.0f };
+		Renderer::Draw(framebuffer, program, triangle, uniforms);
 		m_Window->DrawFramebuffer(framebuffer);
 	}
 }

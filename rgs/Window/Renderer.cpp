@@ -86,4 +86,21 @@ namespace RGS {
 	bool Renderer::InsideTriangle(float(&weights)[3]) {
 		return weights[0] >= -EPSILON && weights[1] >= -EPSILON && weights[2] >= -EPSILON;
 	}
+	bool Renderer::IsBackFacing(const Vec4& a, const Vec4& b, const Vec4& c) {
+		//逆时针为正面可见
+		float signedArea = a.x * b.y - a.y * b.x + b.x * c.y - b.y * c.x + c.x * a.y - c.y * a.x;
+		return signedArea <= 0;
+	}
+	bool Renderer::PassDepthTest(const float writeDepth, const float fDepth, const DepthFuncType depthFunc) {
+		switch (depthFunc) {
+		case DepthFuncType::LESS:
+			return fDepth - writeDepth > EPSILON;
+		case DepthFuncType::LEQUAL:
+			return fDepth - writeDepth >= -EPSILON;
+		case DepthFuncType::ALWAYS:
+			return true;
+		default:
+			return false;
+		}
+	}
 }
