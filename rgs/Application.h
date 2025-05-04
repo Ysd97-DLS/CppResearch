@@ -11,7 +11,7 @@
 
 namespace RGS {
 	struct Camera {
-		Vec4 Pos = { 0.0f,0.0f,0.0f,1.0f };
+		Vec4 Pos = { 0.0f,0.0f,1.0f,1.0f };
 		Vec4 Right = { 1.0f,0.0f,0.0f,0.0f };
 		Vec4 Up = { 0.0f,1.0f,0.0f,0.0f };
 		Vec4 Dir = { 0.0f,0.0f,-1.0f,0.0f };
