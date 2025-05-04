@@ -209,7 +209,16 @@ namespace RGS {
 			color.y = Clamp(color.y, 0.0f, 1.0f);
 			color.z = Clamp(color.z, 0.0f, 1.0f);
 			color.w = Clamp(color.w, 0.0f, 1.0f);
-			framebuffer.SetColor(x, y, color);
+			if (program.EnableBlend) {
+				Vec3 dstColor = framebuffer.GetColor(x, y);
+				Vec3 srcColor = color;
+				float alpha = color.w;
+				color = { Lerp(dstColor,srcColor,alpha),1.0f };
+				framebuffer.SetColor(x, y, color);
+			}
+			else {
+				framebuffer.SetColor(x, y, color);
+			}
 			if (program.EnableWriteDepth) {
 				float depth = varying.FragPos.z;
 				framebuffer.SetDepth(x, y, depth);

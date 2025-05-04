@@ -59,6 +59,9 @@ namespace RGS {
 		constexpr Vec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {
 
 		}
+		constexpr Vec4(const Vec3& vec3, float w) : x(vec3.x), y(vec3.y), z(vec3.z), w(w) {
+		
+		}
 		operator Vec2() const {
 			return { x,y };
 		}

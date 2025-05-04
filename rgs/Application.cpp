@@ -1,10 +1,8 @@
 #include "Application.h"
-#include "\cpp\CppResearch\rgs\Window\Framebuffer.h"
-#include "\cpp\CppResearch\rgs\Base\Maths.h"
-#include "\cpp\CppResearch\rgs\Shader\BlinnShader.h"
-#include "\cpp\CppResearch\rgs\Window\Renderer.h"
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <vector>
 
 namespace RGS {
 	Application::Application(const char* name, int width, int height) : m_name(name), m_width(width), m_height(height) {
@@ -50,6 +48,7 @@ namespace RGS {
 	void Application::Init() {
 		Window::Init();
 		m_Window = Window::Create(m_name, m_width, m_height);
+		LoadMesh("cpp\CppResearch\Assets\\box.obj");
 	}
 	void Application::Terminate() {
 		delete m_Window;
@@ -59,7 +58,7 @@ namespace RGS {
 		OnCameraUpdate(time);
 		Framebuffer framebuffer(m_width, m_height);
 		framebuffer.Clear();
-
+		
 		Program program(BlinnVertexShader, BlinnFragmentShader);
 		Triangle<BlinnVertex> triangle;
 		triangle[0].ModelPos = { 0.0f,0.0f,-10.0f,1.0f };
@@ -70,10 +69,70 @@ namespace RGS {
 		Mat proj = Perspective(90.0f / 360.0f * 2.0f * PI, m_Camera.Aspect, 0.1f, 100.0f);
 		uniforms.mvp = proj * view;
 		Renderer::Draw(framebuffer, program, triangle, uniforms);
+		//混合三角形需要在实心三角形之后绘制
+		uniforms.IsAnother = true;
 		triangle[0].ModelPos = { 10.0f,10.0f,-10.0f,1.0f };
 		triangle[1].ModelPos = { -1.0f,-1.0f,-1.0f,1.0f };
 		triangle[2].ModelPos = { 10.0f,-10.0f,-10.0f,1.0f };
 		Renderer::Draw(framebuffer, program, triangle, uniforms);
 		m_Window->DrawFramebuffer(framebuffer);
+	}
+	void Application::LoadMesh(const char* fileName) {
+		std::ifstream file(fileName, std::ios::in);
+		ASSERT(file);
+		std::vector<Vec3> positions;
+		std::vector<Vec2> texCoords;
+		std::vector<Vec3> normals;
+		std::vector<int> posIndices;
+		std::vector<int> texIndices;
+		std::vector<int> normalIndices;
+		std::string line;
+		while (!file.eof()) {
+			std::getline(file, line);
+			int items = -1;
+			if (line.find("v ") == 0) {
+				Vec3 position;
+				items = sscanf(line.c_str(), "v %f %f %f", &position.x, &position.y, &position.z);
+				ASSERT(items == 3);
+				positions.push_back(position);
+			}
+			else if (line.find("vt ") == 0) {
+				Vec2 texCoord;
+				items = sscanf(line.c_str(), "vt %f %f", &texCoord.x, &texCoord.y);
+				ASSERT(items == 2);
+				texCoords.push_back(texCoord);
+			}
+			else if (line.find("vn ") == 0) {
+				Vec3 normal;
+				items = sscanf(line.c_str(), "vn %f %f %f", &normal.x, &normal.y, &normal.z);
+				ASSERT(items == 3);
+				normals.push_back(normal);
+			}
+			else if (line.find("f ") == 0) {
+				int pIndices[3], uvIndices[3], nIndices[3];
+				items = sscanf(line.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d", &pIndices[0], &uvIndices[0], &nIndices[0], &pIndices[1], &uvIndices[1], &nIndices[1], &pIndices[2], &uvIndices[2], &nIndices[2]);
+				ASSERT(items == 9);
+				for (int i = 0; i < 3; i++) {
+					posIndices.push_back(pIndices[i] - 1);
+					texIndices.push_back(uvIndices[i] - 1);
+					normalIndices.push_back(nIndices[i] - 1);
+				}
+			}
+		}
+		file.close();
+		int triNum = posIndices.size() / 3;
+		for (int i = 0; i < triNum; i++) {
+			Triangle<BlinnVertex> triangle;
+			for (int j = 0; j < 3; j++) {
+				int index = 3 * i + j;
+				int posIndex = posIndices[index];
+				int texIndex = texIndices[index];
+				int nIndex = normalIndices[index];
+				triangle[j].ModelPos = { positions[posIndex],1.0f };
+				triangle[j].TexCoord = texCoords[texIndex];
+				triangle[j].ModelNormal = normals[nIndex];
+			}
+			m_Mesh.emplace_back(triangle);
+		}
 	}
 }
