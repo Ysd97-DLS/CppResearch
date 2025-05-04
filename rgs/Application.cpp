@@ -48,7 +48,7 @@ namespace RGS {
 	void Application::Init() {
 		Window::Init();
 		m_Window = Window::Create(m_name, m_width, m_height);
-		LoadMesh("cpp\CppResearch\Assets\\box.obj");
+		LoadMesh("\\cpp\\CppResearch\\Assets\\sphere.obj");
 	}
 	void Application::Terminate() {
 		delete m_Window;
@@ -60,21 +60,14 @@ namespace RGS {
 		framebuffer.Clear();
 		
 		Program program(BlinnVertexShader, BlinnFragmentShader);
-		Triangle<BlinnVertex> triangle;
-		triangle[0].ModelPos = { 0.0f,0.0f,-10.0f,1.0f };
-		triangle[1].ModelPos = { -10.0f,-10.0f,-10.0f,1.0f };
-		triangle[2].ModelPos = { 30.0f,-10.0f,-10.0f,1.0f };
-		BlinnUniforms uniforms;
 		Mat view = LookAt(m_Camera.Pos, m_Camera.Pos + m_Camera.Dir, { 0.0f,1.0f,0.0f });
 		Mat proj = Perspective(90.0f / 360.0f * 2.0f * PI, m_Camera.Aspect, 0.1f, 100.0f);
-		uniforms.mvp = proj * view;
-		Renderer::Draw(framebuffer, program, triangle, uniforms);
-		//混合三角形需要在实心三角形之后绘制
-		uniforms.IsAnother = true;
-		triangle[0].ModelPos = { 10.0f,10.0f,-10.0f,1.0f };
-		triangle[1].ModelPos = { -1.0f,-1.0f,-1.0f,1.0f };
-		triangle[2].ModelPos = { 10.0f,-10.0f,-10.0f,1.0f };
-		Renderer::Draw(framebuffer, program, triangle, uniforms);
+		Mat model = Identity();
+		BlinnUniforms uniform;
+		uniform.mvp = proj * view * model;
+		for (auto tri : m_Mesh) {
+			Renderer::Draw(framebuffer, program, tri, uniform);
+		}
 		m_Window->DrawFramebuffer(framebuffer);
 	}
 	void Application::LoadMesh(const char* fileName) {
