@@ -12,7 +12,8 @@ set(HEADERS
 	"rgs/Base/Maths.h"
 	"rgs/Shader/BaseShader.h"
 	"rgs/Window/Renderer.h"
-	"rgs/Shader/BlinnShader.h")
+	"rgs/Shader/BlinnShader.h"
+	"rgs/Window/Texture.h")
 
 set(SOURCES
 	"rgs/Main.cpp"

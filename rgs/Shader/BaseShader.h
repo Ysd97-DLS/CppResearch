@@ -1,9 +1,10 @@
 #pragma once
-#include "\cpp\CppResearch\rgs\Base\Maths.h"
+#include "../Base/Maths.h"
 #include <string>
 
 namespace RGS {
 	struct BaseVertex {
+		Vec2 TexCoord;
 		Vec4 ModelPos = { 0,0,0,1 };
 		operator const std::string() const {
 			return "ModelPos: " + (std::string)ModelPos;
@@ -13,6 +14,7 @@ namespace RGS {
 		Vec4 ClipPos = { 0.0f,0.0f,0.0f,1.0f };
 		Vec4 NdcPos = { 0.0f,0.0f,0.0f,1.0f };
 		Vec4 FragPos = { 0.0f,0.0f,0.0f,1.0f };
+		Vec2 TexCoord;
 	};
 	struct BaseUniforms {
 		Mat mvp;

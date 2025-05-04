@@ -1,7 +1,8 @@
-#include "\cpp\CppResearch\rgs\Base\Maths.h"
-#include "\cpp\CppResearch\rgs\Window\Framebuffer.h"
-#include "\cpp\CppResearch\rgs\Shader\BaseShader.h"
-#include "\cpp\CppResearch\rgs\Base\Base.h"
+#include "../Base/Maths.h"
+#include "../Window/Framebuffer.h"
+#include "../Shader/BaseShader.h"
+#include "../Base/Base.h"
+#include "Texture.h"
 #include <type_traits>
 #include <cmath>
 
@@ -29,6 +30,7 @@ namespace RGS {
 		bool EnableWriteDepth = true;
 		bool EnableBlend = true;
 		bool EnableDoubleSided = false;
+		std::vector<Texture*> Textures;
 		DepthFuncType DepthFunc = DepthFuncType::LESS;
 		using vertex_shader = void (*)(varyings&, const vertex&, const uniforms&);
 		vertex_shader VertexShader;

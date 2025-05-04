@@ -1,9 +1,9 @@
 #pragma once 
-#include "\cpp\CppResearch\rgs\Window\Window.h"
-#include "\cpp\CppResearch\rgs\Window\Framebuffer.h"
-#include "\cpp\CppResearch\rgs\Base\Maths.h"
-#include "\cpp\CppResearch\rgs\Shader\BlinnShader.h"
-#include "\cpp\CppResearch\rgs\Window\Renderer.h"
+#include "../rgs/Window/Window.h"
+#include "../rgs/Window/Framebuffer.h"
+#include "../rgs/Base/Maths.h"
+#include "../rgs/Shader/BlinnShader.h"
+#include "../rgs/Window/Renderer.h"
 #include <vector>
 #include <string>
 #include <memory>

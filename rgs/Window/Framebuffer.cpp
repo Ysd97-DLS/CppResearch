@@ -1,5 +1,5 @@
 #pragma once
-#include "\cpp\CppResearch\rgs\Base\Base.h"
+#include "../Base/Base.h"
 #include "Framebuffer.h"
 
 namespace RGS {

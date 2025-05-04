@@ -1,4 +1,4 @@
-#include "\cpp\CppResearch\rgs\Base\Base.h"
+#include "../Base/Base.h"
 #include "Window.h"
 #include "WindowsWindow.h"
 
