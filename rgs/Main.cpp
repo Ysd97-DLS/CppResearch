@@ -3,7 +3,7 @@
 using namespace std;
 
 int main() {
-	RGS::Application app("RGS", 500, 500);
+	RGS::Application app("RGS", 300, 300);
 	app.Run();
 	return 0;
 }

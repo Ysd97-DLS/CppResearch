@@ -110,6 +110,7 @@ namespace RGS {
 	Vec3 operator+(const Vec3& left, const Vec3& right);
 	Vec3 operator-(const Vec3& left, const Vec3& right);
 	Vec3 operator*(const Vec3& left, const float right);
+	Vec3 operator*(const float left, const Vec3& right);
 	Vec3 operator*(const Vec3& left, const Vec3& right);
 	Vec3 operator/(const Vec3& left, const float right);
 	Vec3 Cross(const Vec3& left, const Vec3& right);

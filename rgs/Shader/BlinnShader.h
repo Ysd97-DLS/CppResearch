@@ -9,8 +9,19 @@ namespace RGS {
 	};
 	struct BlinnVaryings : public BaseVaryings {
 		Vec2 TexCoord;
+		Vec3 WorldPos;
+		Vec3 WorldNormal;
 	};
 	struct BlinnUniforms :public BaseUniforms {
+		Mat Model;
+		Mat ModelNormalToWorld;
+		Vec3 LightPos{ 0.0f,1.0f,2.0f };
+		Vec3 LightAmbient{ 0.3f,0.3f,0.3f };
+		Vec3 LightDiffuse{ 0.5f,0.5f,0.5f };
+		Vec3 LightSpecular{ 1.0f,1.0f,1.0f };
+		Vec3 ObjectColor{ 1.0f,1.0f,1.0f };
+		Vec3 CameraPos;
+		float Shininess = 32.0f;
 		bool IsAnother = false;
 	};
 	void BlinnVertexShader(BlinnVaryings& varyings, const BlinnVertex& vertex, const BlinnUniforms& uniforms);

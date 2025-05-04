@@ -65,6 +65,9 @@ namespace RGS {
 		Mat model = Identity();
 		BlinnUniforms uniform;
 		uniform.mvp = proj * view * model;
+		uniform.CameraPos = m_Camera.Pos;
+		uniform.Model = model;
+		uniform.ModelNormalToWorld = Identity();
 		for (auto tri : m_Mesh) {
 			Renderer::Draw(framebuffer, program, tri, uniform);
 		}
