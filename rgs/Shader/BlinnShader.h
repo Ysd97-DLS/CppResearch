@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseShader.h"
 #include "../Base/Maths.h"
+#include "../Window/Texture.h"
 
 namespace RGS {
 	struct BlinnVertex :public BaseVertex {

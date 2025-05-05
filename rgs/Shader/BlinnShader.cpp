@@ -19,7 +19,10 @@ namespace RGS {
 		const Vec3& ambient = uniforms.LightAmbient;
 		Vec3 diffuse = std::max(0.0f, Dot(worldNormal, lightDir)) * uniforms.LightDiffuse;
 		Vec3 specular = (float)pow(std::max(0.0f, Dot(halfDir, worldNormal)), uniforms.Shininess) * uniforms.LightSpecular;
-		Vec3 result = (ambient + diffuse + specular) * uniforms.ObjectColor;
-		return { result, 1.0f };
+
+		// 采样纹理
+		Vec4 texColor = uniforms.texture.Sample(varyings.TexCoord);
+		Vec3 result = (ambient + diffuse + specular) * Vec3(texColor.x, texColor.y, texColor.z) * uniforms.ObjectColor;
+		return { result, texColor.w };
 	}
 }
