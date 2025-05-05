@@ -14,6 +14,7 @@ namespace RGS {
 		Vec3 WorldNormal;
 	};
 	struct BlinnUniforms :public BaseUniforms {
+		BlinnUniforms() = default;
 		Mat Model;
 		Mat ModelNormalToWorld;
 		Vec3 LightPos{ 0.0f,1.0f,2.0f };
@@ -24,6 +25,7 @@ namespace RGS {
 		Vec3 CameraPos;
 		float Shininess = 32.0f;
 		bool IsAnother = false;
+		Texture m_texture;
 	};
 	void BlinnVertexShader(BlinnVaryings& varyings, const BlinnVertex& vertex, const BlinnUniforms& uniforms);
 	Vec4 BlinnFragmentShader(bool& discard, const BlinnVaryings& varyings, const BlinnUniforms& uniforms);

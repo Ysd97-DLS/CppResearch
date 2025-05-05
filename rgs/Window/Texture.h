@@ -15,6 +15,7 @@ namespace RGS {
 
 	class Texture {
 	public:
+		Texture();
 		Texture(const std::string& path);
 		~Texture();
 		Vec4 Sample(Vec2 texCoords) const;

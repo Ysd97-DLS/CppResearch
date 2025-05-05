@@ -1,4 +1,5 @@
 #include "../Base/Base.h"
+#include <algorithm>
 #include "Texture.h"
 #include <iostream>
 #include <fstream>
@@ -6,6 +7,10 @@
 #include <string>
 
 namespace RGS {
+	Texture::Texture() {
+		Init();
+	}
+
 	Texture::Texture(const std::string& path) :m_path(path) {
 		Init();
 	}
