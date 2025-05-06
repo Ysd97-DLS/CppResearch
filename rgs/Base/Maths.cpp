@@ -30,7 +30,9 @@ namespace RGS {
 		return Vec3{ left.x * right.x, left.y * right.y,left.z * right.z };
 	}
 	Vec3 operator/ (const Vec3& left, const float right) {
-		ASSERT(right != 0);
+		if (std::abs(right) < EPSILON) {
+			return Vec3(0.0f, 0.0f, 0.0f); // 除数接近0时返回零向量
+		}
 		return left * (1.0f / right);
 	}
 	Vec3 Cross(const Vec3& left, const Vec3& right) {
@@ -41,7 +43,9 @@ namespace RGS {
 	}
 	Vec3 Normalize(const Vec3& v) {
 		float len = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-		ASSERT(len != 0);
+		if (len < EPSILON) {
+			return Vec3(0.0f, 0.0f, 0.0f); // 返回零向量而不是触发断言
+		}
 		return v / len;
 	}
 	Vec4 operator+ (const Vec4& left, const Vec4& right) {
