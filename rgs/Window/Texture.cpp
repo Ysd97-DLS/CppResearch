@@ -62,11 +62,16 @@ namespace RGS {
 			for (int x = 0; x < m_width; ++x) {
 				int r, g, b;
 				if (!(file >> r >> g >> b)) {
-					std::cerr << "Failed to read pixel data from file: " << m_path << std::endl;
+					std::cerr << "Failed to read pixel data at position (" << x << "," << y << ")" << std::endl;
 					delete[] m_data;
 					m_data = nullptr;
 					return;
 				}
+				// 确保颜色值在有效范围内
+				r = std::clamp(r, 0, maxValue);
+				g = std::clamp(g, 0, maxValue);
+				b = std::clamp(b, 0, maxValue);
+				
 				m_data[y * m_width + x] = Vec4(
 					static_cast<float>(r) / maxValue,
 					static_cast<float>(g) / maxValue,
@@ -76,11 +81,18 @@ namespace RGS {
 			}
 		}
 
+		std::cout << "Texture loaded successfully: " << m_path << std::endl;
+		std::cout << "Dimensions: " << m_width << "x" << m_height << std::endl;
+		std::cout << "Max color value: " << maxValue << std::endl;
+		
 		file.close();
 	}
 
 	Vec4 Texture::Sample(Vec2 texCoords) const {
-		if (!m_data) return Vec4(0.0f, 0.0f, 0.0f, 1.0f);
+		if (!m_data) {
+			std::cerr << "Texture sampling failed: texture data is null" << std::endl;
+			return Vec4(1.0f, 0.0f, 1.0f, 1.0f); // 返回粉色以便调试
+		}
 
 		switch (m_filter) {
 		case TextureFilter::NEAREST:
