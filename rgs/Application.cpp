@@ -65,6 +65,9 @@ namespace RGS {
 		Mat model = Identity();
 		// 假设这里使用一个空路径，实际使用时需要替换为有效的纹理路径
 		BlinnUniforms uniform;
+		uniform.CameraPos = m_Camera.Pos;
+		uniform.Model = model;
+		uniform.ModelNormalToWorld = Identity();
 		uniform.mvp = proj * view * model;
 		for (auto tri : m_Mesh) {
 			Renderer::Draw(framebuffer, program, tri, uniform);

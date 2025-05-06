@@ -14,7 +14,7 @@ namespace RGS {
 		Vec3 WorldNormal;
 	};
 	struct BlinnUniforms :public BaseUniforms {
-		BlinnUniforms() : m_texture("cpp/CppResearch/Assets/P3.ppm") {}
+		BlinnUniforms() : m_texture("/cpp/CppResearch/Assets/P3.ppm") {}
 		Mat Model;
 		Mat ModelNormalToWorld;
 		Vec3 LightPos{ 0.0f,1.0f,2.0f };
@@ -23,7 +23,7 @@ namespace RGS {
 		Vec3 LightSpecular{ 1.0f,1.0f,1.0f };
 		Vec3 ObjectColor{ 1.0f,1.0f,1.0f };
 		Vec3 CameraPos;
-		float Shininess = 32.0f;
+		float Shininess = 64.0f;
 		bool IsAnother = false;
 		Texture m_texture;
 	};
