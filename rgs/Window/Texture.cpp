@@ -80,11 +80,6 @@ namespace RGS {
 				);
 			}
 		}
-
-		std::cout << "Texture loaded successfully: " << m_path << std::endl;
-		std::cout << "Dimensions: " << m_width << "x" << m_height << std::endl;
-		std::cout << "Max color value: " << maxValue << std::endl;
-		
 		file.close();
 	}
 

@@ -14,7 +14,7 @@ namespace RGS {
 		Vec3 WorldNormal;
 	};
 	struct BlinnUniforms :public BaseUniforms {
-		BlinnUniforms() : m_texture("/cpp/CppResearch/Assets/P3.ppm") {}
+		BlinnUniforms() : m_texture("/cpp/CppResearch/Assets/earthmap.ppm") {}
 		Mat Model;
 		Mat ModelNormalToWorld;
 		Vec3 LightPos{ 0.0f,1.0f,2.0f };
