@@ -14,6 +14,19 @@ namespace RGS {
 	Vec2 operator-(const Vec2& left, const Vec2& right) {
 		return Vec2{ left.x - right.x,left.y - right.y };
 	}
+	Vec2 operator*(const Vec2& left, const float right) {
+		return Vec2{ left.x * right,left.y * right };
+	}
+	Vec2 operator*(const float left, const Vec2& right) {
+		return right * left;
+	}
+	Vec2 operator*(const Vec2& left, const Vec2& right) {
+		return Vec2{ left.x * right.x,left.y * right.y };
+	}
+	Vec2 operator/(const Vec2& left, const float right) {
+		ASSERT(right != 0);
+		return left * (1.0f / right);
+	}
 	Vec3 operator+ (const Vec3& left, const Vec3& right) {
 		return Vec3{ left.x + right.x,left.y + right.y,left.z + right.z };
 	}
@@ -42,11 +55,12 @@ namespace RGS {
 		return { x,y,z };
 	}
 	Vec3 Normalize(const Vec3& v) {
-		float len = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-		if (len < EPSILON) {
-			return Vec3(0.0f, 0.0f, 0.0f); // 返回零向量而不是触发断言
+		float squareLen = v.x * v.x + v.y * v.y + v.z * v.z;
+		if (squareLen < EPSILON * EPSILON) {
+			return Vec3(0.0f, 0.0f, 0.0f);
 		}
-		return v / len;
+		float invLen = 1.0f / sqrt(squareLen);
+		return Vec3(v.x * invLen, v.y * invLen, v.z * invLen);
 	}
 	Vec4 operator+ (const Vec4& left, const Vec4& right) {
 		return Vec4{ left.x + right.x,left.y + right.y,left.z + right.z,left.w + right.w };
@@ -67,21 +81,24 @@ namespace RGS {
 		ASSERT(right != 0);
 		return left * (1.0f / right);
 	}
-	Vec4 operator* (const Mat& m, const Vec4& v){
-		Vec4 res;
-		res.x = m.mat[0][0] * v.x + m.mat[0][1] * v.y + m.mat[0][2] * v.z + m.mat[0][3] * v.w;
-		res.y = m.mat[1][0] * v.x + m.mat[1][1] * v.y + m.mat[1][2] * v.z + m.mat[1][3] * v.w;
-		res.z = m.mat[2][0] * v.x + m.mat[2][1] * v.y + m.mat[2][2] * v.z + m.mat[2][3] * v.w;
-		res.w = m.mat[3][0] * v.x + m.mat[3][1] * v.y + m.mat[3][2] * v.z + m.mat[3][3] * v.w;
-		return res;
+	Vec4 operator* (const Mat& m, const Vec4& v) {
+		return Vec4{
+			m.mat[0][0] * v.x + m.mat[0][1] * v.y + m.mat[0][2] * v.z + m.mat[0][3] * v.w,
+			m.mat[1][0] * v.x + m.mat[1][1] * v.y + m.mat[1][2] * v.z + m.mat[1][3] * v.w,
+			m.mat[2][0] * v.x + m.mat[2][1] * v.y + m.mat[2][2] * v.z + m.mat[2][3] * v.w,
+			m.mat[3][0] * v.x + m.mat[3][1] * v.y + m.mat[3][2] * v.z + m.mat[3][3] * v.w
+		};
 	}
 	Mat operator*(const Mat& left, const Mat& right) {
 		Mat res;
+		// 使用循环展开和临时变量优化
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
+				float sum = 0.0f;
 				for (int k = 0; k < 4; k++) {
-					res.mat[i][j] += left.mat[i][k] * right.mat[k][j];
+					sum += left.mat[i][k] * right.mat[k][j];
 				}
+				res.mat[i][j] = sum;
 			}
 		}
 		return res;
@@ -103,7 +120,6 @@ namespace RGS {
 	}
 	Mat Translate(float tx, float ty, float tz) {
 		Mat m = Identity();
-		ASSERT(tx != 0 && ty != 0 && tz != 0);
 		m.mat[0][3] = tx;
 		m.mat[1][3] = ty;
 		m.mat[2][3] = tz;

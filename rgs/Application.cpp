@@ -48,7 +48,110 @@ namespace RGS {
 	void Application::Init() {
 		Window::Init();
 		m_Window = Window::Create(m_name, m_width, m_height);
-		LoadMesh("\\cpp\\CppResearch\\Assets\\sphere.obj");
+		
+		// 设置场景背景颜色
+		m_Scene.SetBackgroundColor(Vec3(0.2f, 0.2f, 0.2f));
+		
+		// 选择纹理
+		int textureChoice = 0;
+		bool validChoice = false;
+		do {
+			std::cout << "\nChoose texture type:" << std::endl;
+			std::cout << "1. square" << std::endl;
+			std::cout << "2. metal" << std::endl;
+			std::cout << "3. white" << std::endl;
+			
+			if (std::cin >> textureChoice && textureChoice >= 1 && textureChoice <= 3) {
+				validChoice = true;
+			} else {
+				std::cout << "Invalid choice. Please try again.\n";
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			}
+		} while (!validChoice);
+		
+		switch(textureChoice) {
+			case 1:
+				m_TexturePath = "\\cpp\\CppResearch\\Assets\\square.ppm";
+				break;
+			case 2:
+				m_TexturePath = "\\cpp\\CppResearch\\Assets\\metal.ppm";
+				break;
+			case 3:
+				m_TexturePath = "\\cpp\\CppResearch\\Assets\\white.ppm";
+				break;
+			default:
+				m_TexturePath = "\\cpp\\CppResearch\\Assets\\square.ppm";
+				break;
+		}
+		
+		bool addingObjects = true;
+		while (addingObjects) {
+		    std::cout << "\nChoose addition setting:" << std::endl;
+		    std::cout << "1.Add new object" << std::endl;
+		    std::cout << "2. Addition finished" << std::endl;
+		    
+		    int choice;
+		    std::cin >> choice;
+		    
+		    if (choice == 2) {
+		        addingObjects = false;
+		        continue;
+		    }
+		    
+		    std::cout << "\nChoose model type:" << std::endl;
+		    std::cout << "1. box" << std::endl;
+		    std::cout << "2. sphere" << std::endl;
+		    std::cout << "3. hornet" << std::endl;
+		    
+		    int modelChoice;
+		    std::cin >> modelChoice;
+		    
+		    std::string modelPath;
+		    switch (modelChoice) {
+		    case 1:
+		        modelPath = "\\cpp\\CppResearch\\Assets\\box.obj";
+		        break;
+		    case 2:
+		        modelPath = "\\cpp\\CppResearch\\Assets\\sphere.obj";
+		        break;
+		    case 3:
+		        modelPath = "\\cpp\\CppResearch\\Assets\\hornet.obj";
+		        break;
+		    default:
+		        modelPath = "\\cpp\\CppResearch\\Assets\\box.obj";
+		        break;
+		    }
+		    auto meshObject = std::make_shared<MeshObject>("Object_" + std::to_string(m_Scene.GetObjects().size() + 1));
+		    meshObject->LoadFromFile(modelPath.c_str());
+		    meshObject->SetTexturePath(m_TexturePath.empty() ? "\\cpp\\CppResearch\\Assets\\square.ppm" : m_TexturePath);
+
+		    float x, y, z;
+		    std::cout << "\nPress object position (x y z): ";
+		    std::cin >> x >> y >> z;
+		    meshObject->SetPosition(Vec3(x, y, z));
+		    
+		    // 设置对象的旋转
+		    std::cout << "\nPress object rotation angle (x y z) [radian]: ";
+		    std::cin >> x >> y >> z;
+		    meshObject->SetRotation(Vec3(x, y, z));
+		    
+		    // 设置对象的缩放
+		    std::cout << "\nPress object scale (x y z): ";
+		    std::cin >> x >> y >> z;
+		    meshObject->SetScale(Vec3(x, y, z));
+		    
+		    // 将对象添加到场景中
+		    m_Scene.AddObject(meshObject);
+		}
+		
+		// 设置光照强度
+		float lightIntensity = 1.0f;
+		do {
+		    std::cout << "\nChoose light intensity (0.0-128.0): ";
+		    std::cin >> lightIntensity;
+		} while (lightIntensity < 0.0f || lightIntensity > 128.0f);
+		SetLightIntensity(lightIntensity);
 	}
 	void Application::Terminate() {
 		delete m_Window;
@@ -56,22 +159,32 @@ namespace RGS {
 	}
 	void Application::OnUpdate(float time) {
 		OnCameraUpdate(time);
+		
 		Framebuffer framebuffer(m_width, m_height);
-		framebuffer.Clear();
+		framebuffer.Clear(m_Scene.GetBackgroundColor());
 		
 		Program program(BlinnVertexShader, BlinnFragmentShader);
 		Mat view = LookAt(m_Camera.Pos, m_Camera.Pos + m_Camera.Dir, { 0.0f,1.0f,0.0f });
 		Mat proj = Perspective(90.0f / 360.0f * 2.0f * PI, m_Camera.Aspect, 0.1f, 100.0f);
-		Mat model = Identity();
-		// 假设这里使用一个空路径，实际使用时需要替换为有效的纹理路径
-		BlinnUniforms uniform;
-		uniform.CameraPos = m_Camera.Pos;
-		uniform.Model = model;
-		uniform.ModelNormalToWorld = Identity();
-		uniform.mvp = proj * view * model;
-		for (auto tri : m_Mesh) {
-			Renderer::Draw(framebuffer, program, tri, uniform);
+		
+		for (const auto& object : m_Scene.GetObjects()) {
+		    auto meshObject = std::dynamic_pointer_cast<MeshObject>(object);
+		    if (meshObject) {
+		        Mat model = object->GetTransform();
+		        BlinnUniforms uniform(meshObject->GetTexturePath());
+		        uniform.CameraPos = m_Camera.Pos;
+		        uniform.Model = model;
+		        uniform.ModelNormalToWorld = Identity();
+		        uniform.mvp = proj * view * model;
+		        uniform.Shininess = m_LightIntensity;
+		        
+		        const auto& mesh = meshObject->GetMesh();
+		        for (const auto& tri : mesh) {
+		            Renderer::Draw(framebuffer, program, tri, uniform);
+		        }
+		    }
 		}
+		
 		m_Window->DrawFramebuffer(framebuffer);
 	}
 	void Application::LoadMesh(const char* fileName) {

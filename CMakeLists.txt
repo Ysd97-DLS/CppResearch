@@ -7,13 +7,16 @@ set(HEADERS
 	"rgs/Window/Window.h" 
 	"rgs/Window/WindowsWindow.h" 
 	"rgs/Base/Base.h"
-	"rgs/Window/InputCode.h"
+	"rgs/Base/InputCode.h"
 	"rgs/Window/Framebuffer.h"
 	"rgs/Base/Maths.h"
 	"rgs/Shader/BaseShader.h"
-	"rgs/Window/Renderer.h"
+	"rgs/Renderer/Renderer.h"
 	"rgs/Shader/BlinnShader.h"
-	"rgs/Window/Texture.h")
+	"rgs/Texture/Texture.h"
+	"rgs/Scene/Scene.h"
+	"rgs/Scene/SceneObject.h"
+	"rgs/Scene/MeshObject.h")
 
 set(SOURCES
 	"rgs/Main.cpp"
@@ -23,8 +26,9 @@ set(SOURCES
 	"rgs/Window/Framebuffer.cpp"
 	"rgs/Base/Maths.cpp"
 	"rgs/Shader/BlinnShader.cpp"
-	"rgs/Window/Renderer.cpp"
-	"rgs/Window/Texture.cpp")
+	"rgs/Renderer/Renderer.cpp"
+	"rgs/Texture/Texture.cpp"
+	"rgs/Scene/MeshObject.cpp")
 
 set(INCLUDE_PATH
 	"src"

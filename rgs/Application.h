@@ -3,7 +3,8 @@
 #include "../rgs/Window/Framebuffer.h"
 #include "../rgs/Base/Maths.h"
 #include "../rgs/Shader/BlinnShader.h"
-#include "../rgs/Window/Renderer.h"
+#include "../rgs/Scene/Scene.h"
+#include "../rgs/Scene/MeshObject.h"
 #include <vector>
 #include <string>
 #include <memory>
@@ -23,6 +24,15 @@ namespace RGS {
 		Application(const char* name, int width, int length);
 		~Application();
 		void Run();
+        Scene& GetScene() { return m_Scene; }
+        const Scene& GetScene() const { return m_Scene; }
+        
+        void SetModelPath(const std::string& path) { m_ModelPath = path; }
+        void SetTexturePath(const std::string& path) { m_TexturePath = path; }
+        
+        void SetLightIntensity(float intensity) { m_LightIntensity = intensity; }
+        void SetMSAAQuality(int samples) { m_MSAASamples = samples; }
+
 	private:
 		void Init();
 		void Terminate();
@@ -36,5 +46,10 @@ namespace RGS {
 		Window* m_Window;
 		Camera m_Camera;
 		std::vector<Triangle<BlinnVertex>> m_Mesh;
-	};
+        Scene m_Scene;
+        std::string m_ModelPath;
+        std::string m_TexturePath;
+        float m_LightIntensity = 1.0f;
+        int m_MSAASamples = 4;
+    };
 }

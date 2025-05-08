@@ -1,5 +1,5 @@
 #pragma once
-#include "InputCode.h"
+#include "../Base/InputCode.h"
 #include "Framebuffer.h"
 
 namespace RGS {

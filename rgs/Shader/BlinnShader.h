@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseShader.h"
 #include "../Base/Maths.h"
-#include "../Window/Texture.h"
+#include "../Texture/Texture.h"
 
 namespace RGS {
 	struct BlinnVertex :public BaseVertex {
@@ -14,7 +14,7 @@ namespace RGS {
 		Vec3 WorldNormal;
 	};
 	struct BlinnUniforms :public BaseUniforms {
-		BlinnUniforms() : m_texture("/cpp/CppResearch/Assets/earthmap.ppm") {}
+		BlinnUniforms(const std::string& path) : m_texture(path) {}
 		Mat Model;
 		Mat ModelNormalToWorld;
 		Vec3 LightPos{ 0.0f,1.0f,2.0f };
