@@ -58,7 +58,9 @@ namespace RGS {
 		OnCameraUpdate(time);
 		
 		Framebuffer framebuffer(m_width, m_height);
-		framebuffer.Clear();
+		framebuffer.EnableMSAA(true);
+		framebuffer.SetMSAASamples(4);
+		framebuffer.Clear(m_Scene.GetBackgroundColor());
 		
 		Program program(BlinnVertexShader, BlinnFragmentShader);
 		Mat view = LookAt(m_Camera.Pos, m_Camera.Pos + m_Camera.Dir, { 0.0f,1.0f,0.0f });

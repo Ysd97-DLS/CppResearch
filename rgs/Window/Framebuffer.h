@@ -19,6 +19,9 @@ namespace RGS {
 		float GetDepth(const int x, const int y) const;
 		void Clear(const Vec3& color = { 0.0f, 0.0f, 0.0f });
 		void ClearDepth(const float depth = 1.0f);
+		void EnableMSAA(bool enable = true) { m_MSAA = enable; }
+		bool IsMSAAEnabled() const { return m_MSAA; }
+		void SetMSAASamples(int samples) { m_MSAASamples = samples; }
 	private:
 		int GetPixelIdx(const int x, const int y) const {
 			return y * m_Width + x;
@@ -28,5 +31,8 @@ namespace RGS {
 		int m_PixelSize;
 		float* m_DepthBuffer;
 		Vec3* m_ColorBuffer;
+		bool m_MSAA = false;
+		int m_MSAASamples = 4;
+		static const Vec2 m_MSAAOffsets[4];
 	};
 }

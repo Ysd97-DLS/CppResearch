@@ -31,7 +31,11 @@ namespace RGS {
             return m_Objects;
         }
 
+        void SetBackgroundColor(const Vec3& color) { m_BackgroundColor = color; }
+        const Vec3& GetBackgroundColor() const { return m_BackgroundColor; }
+
     private:
         std::vector<std::shared_ptr<SceneObject>> m_Objects;
+        Vec3 m_BackgroundColor{0.0f, 0.0f, 0.0f};
     };
 }
