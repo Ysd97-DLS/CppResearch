@@ -48,7 +48,16 @@ namespace RGS {
 	void Application::Init() {
 		Window::Init();
 		m_Window = Window::Create(m_name, m_width, m_height);
-		LoadMesh("\\cpp\\CppResearch\\Assets\\sphere.obj");
+		
+		// 默认模型和纹理路径
+		if (m_ModelPath.empty()) {
+			m_ModelPath = "\\cpp\\CppResearch\\Assets\\sphere.obj";
+		}
+		if (m_TexturePath.empty()) {
+			m_TexturePath = "\\cpp\\CppResearch\\Assets\\P3.ppm";
+		}
+		
+		LoadMesh(m_ModelPath.c_str());
 	}
 	void Application::Terminate() {
 		delete m_Window;
@@ -66,7 +75,7 @@ namespace RGS {
 		Mat view = LookAt(m_Camera.Pos, m_Camera.Pos + m_Camera.Dir, { 0.0f,1.0f,0.0f });
 		Mat proj = Perspective(90.0f / 360.0f * 2.0f * PI, m_Camera.Aspect, 0.1f, 100.0f);
 		Mat model = Identity();
-		BlinnUniforms uniform("/cpp/CppResearch/Assets/P3.ppm");
+		BlinnUniforms uniform(m_TexturePath);
 		uniform.CameraPos = m_Camera.Pos;
 		uniform.Model = model;
 		uniform.ModelNormalToWorld = Identity();

@@ -26,6 +26,10 @@ namespace RGS {
 		void Run();
         Scene& GetScene() { return m_Scene; }
         const Scene& GetScene() const { return m_Scene; }
+        
+        // 添加设置模型和纹理路径的方法
+        void SetModelPath(const std::string& path) { m_ModelPath = path; }
+        void SetTexturePath(const std::string& path) { m_TexturePath = path; }
 
 	private:
 		void Init();
@@ -41,5 +45,7 @@ namespace RGS {
 		Camera m_Camera;
 		std::vector<Triangle<BlinnVertex>> m_Mesh;
         Scene m_Scene;
+        std::string m_ModelPath;
+        std::string m_TexturePath;
 	};
 }
