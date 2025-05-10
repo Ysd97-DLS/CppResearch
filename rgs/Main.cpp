@@ -3,16 +3,17 @@
 #include <string>
 
 int main() {
-    RGS::Application app("RGS", 800, 800);
-    
-    std::cout << "可用的模型列表：" << std::endl;
+    RGS::Application app("RGS", 300, 300);
+    app.GetScene().SetBackgroundColor({ 0.529f, 0.808f, 0.922f });
+
+    auto object = std::make_shared<RGS::SceneObject>("MyObject");
+    object->SetPosition({ 0, 1, 0 });
+    object->SetRotation({ 0, PI / 4, 0 });
+    std::cout << "Choose model type:" << std::endl;
     std::cout << "1. sphere.obj" << std::endl;
     std::cout << "2. box.obj" << std::endl;
-    std::cout << "请选择要渲染的模型 (输入数字): ";
-    
     int modelChoice;
     std::cin >> modelChoice;
-    
     std::string modelPath;
     switch(modelChoice) {
         case 1:
@@ -26,10 +27,9 @@ int main() {
             break;
     }
     
-    std::cout << "\n可用的纹理列表：" << std::endl;
+    std::cout << "\nChoose texture type:" << std::endl;
     std::cout << "1. P3.ppm" << std::endl;
     std::cout << "2. earthmap.ppm" << std::endl;
-    std::cout << "请选择要使用的纹理 (输入数字): ";
     
     int textureChoice;
     std::cin >> textureChoice;
