@@ -4,6 +4,7 @@
 #include "../rgs/Base/Maths.h"
 #include "../rgs/Shader/BlinnShader.h"
 #include "../rgs/Window/Renderer.h"
+#include "../rgs/Scene/Scene.h"
 #include <vector>
 #include <string>
 #include <memory>
@@ -23,6 +24,9 @@ namespace RGS {
 		Application(const char* name, int width, int length);
 		~Application();
 		void Run();
+        Scene& GetScene() { return m_Scene; }
+        const Scene& GetScene() const { return m_Scene; }
+
 	private:
 		void Init();
 		void Terminate();
@@ -36,5 +40,6 @@ namespace RGS {
 		Window* m_Window;
 		Camera m_Camera;
 		std::vector<Triangle<BlinnVertex>> m_Mesh;
+        Scene m_Scene;
 	};
 }
