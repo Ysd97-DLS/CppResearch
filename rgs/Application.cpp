@@ -131,21 +131,17 @@ namespace RGS {
 		    std::cin >> x >> y >> z;
 		    meshObject->SetPosition(Vec3(x, y, z));
 		    
-		    // 设置对象的旋转
 		    std::cout << "\nPress object rotation angle (x y z) [radian]: ";
 		    std::cin >> x >> y >> z;
 		    meshObject->SetRotation(Vec3(x, y, z));
 		    
-		    // 设置对象的缩放
 		    std::cout << "\nPress object scale (x y z): ";
 		    std::cin >> x >> y >> z;
 		    meshObject->SetScale(Vec3(x, y, z));
 		    
-		    // 将对象添加到场景中
 		    m_Scene.AddObject(meshObject);
 		}
 		
-		// 设置光照强度
 		float lightIntensity = 1.0f;
 		do {
 		    std::cout << "\nChoose light intensity (0.0-128.0): ";
@@ -167,25 +163,54 @@ namespace RGS {
 		Mat view = LookAt(m_Camera.Pos, m_Camera.Pos + m_Camera.Dir, { 0.0f,1.0f,0.0f });
 		Mat proj = Perspective(90.0f / 360.0f * 2.0f * PI, m_Camera.Aspect, 0.1f, 100.0f);
 		
-		for (const auto& object : m_Scene.GetObjects()) {
-		    auto meshObject = std::dynamic_pointer_cast<MeshObject>(object);
-		    if (meshObject) {
-		        Mat model = object->GetTransform();
-		        BlinnUniforms uniform(meshObject->GetTexturePath());
-		        uniform.CameraPos = m_Camera.Pos;
-		        uniform.Model = model;
-		        uniform.ModelNormalToWorld = Identity();
-		        uniform.mvp = proj * view * model;
-		        uniform.Shininess = m_LightIntensity;
-		        
-		        const auto& mesh = meshObject->GetMesh();
-		        for (const auto& tri : mesh) {
-		            Renderer::Draw(framebuffer, program, tri, uniform);
-		        }
+		const auto& objects = m_Scene.GetObjects();
+		std::vector<std::thread> threads;
+		std::vector<std::shared_ptr<MeshObject>> meshObjects;
+		
+		for (const auto& object : objects) {
+		    if (auto meshObject = std::dynamic_pointer_cast<MeshObject>(object)) {
+		        meshObjects.push_back(meshObject);
 		    }
 		}
 		
+		int objectsPerThread = (meshObjects.size() + m_ThreadCount - 1) / m_ThreadCount;
+		
+		for (int i = 0; i < m_ThreadCount; ++i) {
+		    int startIdx = i * objectsPerThread;
+		    int endIdx = std::min(startIdx + objectsPerThread, static_cast<int>(meshObjects.size()));
+		    
+		    if (startIdx >= meshObjects.size()) break;
+		    
+		    threads.emplace_back([this, &framebuffer, &program, &view, &proj, &meshObjects, startIdx, endIdx]() {
+		        for (int j = startIdx; j < endIdx; ++j) {
+		            RenderObject(meshObjects[j], framebuffer, program, view, proj);
+		        }
+		    });
+		}
+		for (auto& thread : threads) {
+		    thread.join();
+		}
+		
 		m_Window->DrawFramebuffer(framebuffer);
+	}
+	void Application::RenderObject(const std::shared_ptr<MeshObject>& meshObject,
+	                             Framebuffer& framebuffer,
+	                             const Program<BlinnVertex, BlinnUniforms, BlinnVaryings>& program,
+	                             const Mat& view,
+	                             const Mat& proj) {
+	    Mat model = meshObject->GetTransform();
+	    BlinnUniforms uniform(meshObject->GetTexturePath());
+	    uniform.CameraPos = m_Camera.Pos;
+	    uniform.Model = model;
+	    uniform.ModelNormalToWorld = Identity();
+	    uniform.mvp = proj * view * model;
+	    uniform.Shininess = m_LightIntensity;
+	    
+	    const auto& mesh = meshObject->GetMesh();
+	    for (const auto& tri : mesh) {
+	        std::lock_guard<std::mutex> lock(m_FramebufferMutex);
+	        Renderer::Draw(framebuffer, program, tri, uniform);
+	    }
 	}
 	void Application::LoadMesh(const char* fileName) {
 		std::ifstream file(fileName, std::ios::in);

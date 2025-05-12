@@ -9,6 +9,8 @@
 #include <string>
 #include <memory>
 #include <chrono>
+#include <thread>
+#include <mutex>
 
 namespace RGS {
 	struct Camera {
@@ -51,5 +53,14 @@ namespace RGS {
         std::string m_TexturePath;
         float m_LightIntensity = 1.0f;
         int m_MSAASamples = 4;
+    private:
+        void RenderObject(const std::shared_ptr<MeshObject>& meshObject, 
+                         Framebuffer& framebuffer,
+                         const Program<BlinnVertex, BlinnUniforms, BlinnVaryings>& program,
+                         const Mat& view,
+                         const Mat& proj);
+        
+        std::mutex m_FramebufferMutex;
+        int m_ThreadCount = std::thread::hardware_concurrency();
     };
 }
