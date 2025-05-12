@@ -72,16 +72,16 @@ namespace RGS {
 		
 		switch(textureChoice) {
 			case 1:
-				m_TexturePath = "\\cpp\\CppResearch\\Assets\\square.ppm";
+				m_TexturePath = "../../../Assets/square.ppm";
 				break;
 			case 2:
-				m_TexturePath = "\\cpp\\CppResearch\\Assets\\metal.ppm";
+				m_TexturePath = "../../../Assets/metal.ppm";
 				break;
 			case 3:
-				m_TexturePath = "\\cpp\\CppResearch\\Assets\\white.ppm";
+				m_TexturePath = "../../../Assets/white.ppm";
 				break;
 			default:
-				m_TexturePath = "\\cpp\\CppResearch\\Assets\\square.ppm";
+				m_TexturePath = "../../../Assets/square.ppm";
 				break;
 		}
 		
@@ -110,21 +110,21 @@ namespace RGS {
 		    std::string modelPath;
 		    switch (modelChoice) {
 		    case 1:
-		        modelPath = "\\cpp\\CppResearch\\Assets\\box.obj";
+		        modelPath = "../../../Assets/box.obj";
 		        break;
 		    case 2:
-		        modelPath = "\\cpp\\CppResearch\\Assets\\sphere.obj";
+		        modelPath = "../../../Assets/sphere.obj";
 		        break;
 		    case 3:
-		        modelPath = "\\cpp\\CppResearch\\Assets\\hornet.obj";
+		        modelPath = "../../../Assets/hornet.obj";
 		        break;
 		    default:
-		        modelPath = "\\cpp\\CppResearch\\Assets\\box.obj";
+		        modelPath = "../../../Assets/box.obj";
 		        break;
 		    }
 		    auto meshObject = std::make_shared<MeshObject>("Object_" + std::to_string(m_Scene.GetObjects().size() + 1));
 		    meshObject->LoadFromFile(modelPath.c_str());
-		    meshObject->SetTexturePath(m_TexturePath.empty() ? "\\cpp\\CppResearch\\Assets\\square.ppm" : m_TexturePath);
+		    meshObject->SetTexturePath(m_TexturePath.empty() ? "../../../Assets/square.ppm" : m_TexturePath);
 
 		    float x, y, z;
 		    std::cout << "\nPress object position (x y z): ";
