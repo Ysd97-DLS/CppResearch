@@ -33,7 +33,6 @@ namespace RGS {
         void SetTexturePath(const std::string& path) { m_TexturePath = path; }
         
         void SetLightIntensity(float intensity) { m_LightIntensity = intensity; }
-        void SetMSAAQuality(int samples) { m_MSAASamples = samples; }
 
 	private:
 		void Init();
@@ -52,7 +51,6 @@ namespace RGS {
         std::string m_ModelPath;
         std::string m_TexturePath;
         float m_LightIntensity = 1.0f;
-        int m_MSAASamples = 4;
     private:
         void RenderObject(const std::shared_ptr<MeshObject>& meshObject, 
                          Framebuffer& framebuffer,
