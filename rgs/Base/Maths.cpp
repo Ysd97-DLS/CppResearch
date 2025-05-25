@@ -91,7 +91,6 @@ namespace RGS {
 	}
 	Mat operator*(const Mat& left, const Mat& right) {
 		Mat res;
-		// 使用循环展开和临时变量优化
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				float sum = 0.0f;
@@ -177,9 +176,6 @@ namespace RGS {
 		Vec3 cy = Normalize(Cross(cz, cx));
 		return LookAt(cx, cy, cz, eye);
 	}
-	float Dot(const Vec3& left, const Vec3& right) {
-		return left.x * right.x + left.y * right.y + left.z * right.z;
-	}
 	Mat Perspective(float fov, float aspect, float near, float far) {
 		Mat m = Identity();
 		ASSERT(fov > 0 && aspect > 0);
@@ -191,6 +187,9 @@ namespace RGS {
 		m.mat[3][2] = -1;
 		m.mat[3][3] = 0;
 		return m;
+	}
+	float Dot(const Vec3& left, const Vec3& right) {
+		return left.x * right.x + left.y * right.y + left.z * right.z;
 	}
 	float Lerp(const float start, const float end, const float ratio) {
 		return end * ratio + start * (1.0f - ratio);

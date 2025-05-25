@@ -52,39 +52,7 @@ namespace RGS {
 		// 设置场景背景颜色
 		m_Scene.SetBackgroundColor(Vec3(0.2f, 0.2f, 0.2f));
 		
-		// 选择纹理
-		int textureChoice = 0;
-		bool validChoice = false;
-		do {
-			std::cout << "\nChoose texture type:" << std::endl;
-			std::cout << "1. square" << std::endl;
-			std::cout << "2. metal" << std::endl;
-			std::cout << "3. white" << std::endl;
-			
-			if (std::cin >> textureChoice && textureChoice >= 1 && textureChoice <= 3) {
-				validChoice = true;
-			} else {
-				std::cout << "Invalid choice. Please try again.\n";
-				std::cin.clear();
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			}
-		} while (!validChoice);
-		
-		switch(textureChoice) {
-			case 1:
-				m_TexturePath = "../../../Assets/square.ppm";
-				break;
-			case 2:
-				m_TexturePath = "../../../Assets/metal.ppm";
-				break;
-			case 3:
-				m_TexturePath = "../../../Assets/white.ppm";
-				break;
-			default:
-				m_TexturePath = "../../../Assets/square.ppm";
-				break;
-		}
-		
+
 		bool addingObjects = true;
 		while (addingObjects) {
 		    std::cout << "\nChoose addition setting:" << std::endl;
@@ -122,6 +90,40 @@ namespace RGS {
 		        modelPath = "../../../Assets/box.obj";
 		        break;
 		    }
+			// 选择纹理
+			int textureChoice = 0;
+			bool validChoice = false;
+			do {
+				std::cout << "\nChoose texture type:" << std::endl;
+				std::cout << "1. square" << std::endl;
+				std::cout << "2. metal" << std::endl;
+				std::cout << "3. white" << std::endl;
+
+				if (std::cin >> textureChoice && textureChoice >= 1 && textureChoice <= 3) {
+					validChoice = true;
+				}
+				else {
+					std::cout << "Invalid choice. Please try again.\n";
+					std::cin.clear();
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				}
+			} while (!validChoice);
+
+			switch (textureChoice) {
+			case 1:
+				m_TexturePath = "../../../Assets/square.ppm";
+				break;
+			case 2:
+				m_TexturePath = "../../../Assets/metal.ppm";
+				break;
+			case 3:
+				m_TexturePath = "../../../Assets/white.ppm";
+				break;
+			default:
+				m_TexturePath = "../../../Assets/square.ppm";
+				break;
+			}
+
 		    auto meshObject = std::make_shared<MeshObject>("Object_" + std::to_string(m_Scene.GetObjects().size() + 1));
 		    meshObject->LoadFromFile(modelPath.c_str());
 		    meshObject->SetTexturePath(m_TexturePath.empty() ? "../../../Assets/square.ppm" : m_TexturePath);
